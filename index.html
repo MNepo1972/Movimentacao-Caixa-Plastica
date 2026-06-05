@@ -3813,10 +3813,7 @@ function parsePlanilha(buf) {
   const ws   = wb.Sheets['Base_Saldo'];
   if (!ws) throw new Error('Aba "Base_Saldo" não encontrada');
   const rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true});
-  // DEBUG: logar os primeiros valores de data
-  const sample = rows.slice(1,4).map(r => ({tipo: typeof r[9], val: r[9], prod: r[6], qtd: r[12]}));
-  console.log('DEBUG sample:', JSON.stringify(sample));
-  throw new Error('DEBUG: ' + JSON.stringify(sample[0]));
+
 
   const movDia   = {};
   const movTipo  = {};
@@ -3868,8 +3865,10 @@ function parsePlanilha(buf) {
   });
 
   // Calcular 90 dias a partir da data máxima
-  const hoje  = new Date(maxDate + 'T00:00:00Z');
-  const d90   = new Date(hoje); d90.setDate(d90.getDate() - 90);
+  // Converter maxDate (string yyyy-mm-dd) para objeto Date com segurança
+  const [mY, mM, mD] = maxDate.split('-').map(Number);
+  const hoje = new Date(Date.UTC(mY, mM-1, mD));
+  const d90  = new Date(Date.UTC(mY, mM-1, mD - 90));
   const d90Str = d90.toISOString().slice(0,10);
   const periodoInicio = d90Str;
 
@@ -3943,7 +3942,8 @@ function parsePlanilha(buf) {
   // Fornecedores com status
   const hojeMs   = hoje.getTime();
   const fornList = Object.entries(fornMap).map(([nome, v]) => {
-    const ultMs   = new Date(v.ultima + 'T00:00:00Z').getTime();
+    const [uY,uM,uD] = v.ultima.split('-').map(Number);
+    const ultMs   = new Date(Date.UTC(uY, uM-1, uD)).getTime();
     const diasSem = Math.round((hojeMs - ultMs) / 86400000);
     const status  = diasSem > 21 ? 'CRÍTICO' : diasSem > 7 ? 'ATENÇÃO' : 'OK';
     return { fornecedor: nome, ultima_data: v.ultima, dias_sem_mov: diasSem,
