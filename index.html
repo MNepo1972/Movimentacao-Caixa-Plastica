@@ -3786,10 +3786,10 @@ function renderFornTable() {
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+// ═══════════ FIREBASE CONFIG ═══════════
 const firebaseConfig = {
   apiKey: "AIzaSyB4QWLBAAoFlT4CuqnU8iD7ROuSF67-dbw",
   authDomain: "movimentacao-caixas-plasticas.firebaseapp.com",
@@ -3799,187 +3799,178 @@ const firebaseConfig = {
   messagingSenderId: "791785247515",
   appId: "1:791785247515:web:63ec6f016b72349febf9be"
 };
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-const fbApp = initializeApp(firebaseConfig);
-const db    = getDatabase(fbApp);
-
-const PRODUTOS_V = ['CAIXA PLASTICA MODELO M','CAIXA PLASTICA MODELO P','CAIXA PLASTICA MODELO G',
-                    'CAIXA PLASTICA MODELO VERDE','CAIXA PLASTICA MODELO CARADORI'];
+// ═══════════ CONSTANTES ═══════════
+const PRODUTOS_V = [
+  'CAIXA PLASTICA MODELO M','CAIXA PLASTICA MODELO P','CAIXA PLASTICA MODELO G',
+  'CAIXA PLASTICA MODELO VERDE','CAIXA PLASTICA MODELO CARADORI'
+];
 
 let pendData = null;
 
-// ── PARSE PLANILHA ─────────────────────────
+// ═══════════ PARSE PLANILHA ═══════════
+function excelSerialToDate(v) {
+  if (v instanceof Date) return v.toISOString().slice(0,10);
+  if (typeof v === 'string' && v.length >= 8) return v.slice(0,10);
+  if (typeof v === 'number') {
+    var d = new Date(Date.UTC(1900,0,1) + (v > 59 ? v-2 : v-1)*86400000);
+    return d.toISOString().slice(0,10);
+  }
+  return null;
+}
+
 function parsePlanilha(buf) {
-  const wb   = XLSX.read(buf, {type:'array', cellDates:false});
-  const ws   = wb.Sheets['Base_Saldo'];
+  var wb   = XLSX.read(buf, {type:'array', cellDates:false});
+  var ws   = wb.Sheets['Base_Saldo'];
   if (!ws) throw new Error('Aba "Base_Saldo" não encontrada');
-  const rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true});
+  var rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true});
 
+  if (rows.length < 2) throw new Error('Planilha sem dados');
 
-  const movDia   = {};
-  const movTipo  = {};
-  const porProd  = {};
-  const fornMap  = {};
+  var movDia  = {};
+  var movTipo = {};
+  var fornMap = {};
+  var maxDate = '1900-01-01';
 
-  let maxDate = '1900-01-01';
+  // Loop principal
+  for (var i = 1; i < rows.length; i++) {
+    var r       = rows[i];
+    var tipo    = String(r[0]  || '').trim();
+    var empresa = String(r[2]  || '').trim();
+    var cd      = r[3];
+    var prodRaw = String(r[6]  || '').trim();
+    var qtd     = parseFloat(r[12]) || 0;
+    var ds      = excelSerialToDate(r[9]);
 
-  rows.slice(1).forEach(r => {
-    const tipo     = String(r[0]  || '').trim();
-    const empresa  = String(r[2]  || '').trim();
-    const cd       = r[3];
-    const prodRaw  = String(r[6]  || '').trim();
-    const qtd      = parseFloat(r[12]) || 0;
-    let dataStr = null;
-    const dv = r[9];
-    if (typeof dv === 'number') {
-      // Serial Excel → data
-      const d = new Date(Date.UTC(1900,0,1) + (dv > 59 ? dv-2 : dv-1)*86400000);
-      dataStr = d.toISOString().slice(0,10);
-    } else if (dv instanceof Date) {
-      dataStr = dv.toISOString().slice(0,10);
-    } else if (typeof dv === 'string' && dv.length >= 8) {
-      dataStr = dv.slice(0,10);
-    }
+    if (!ds || !qtd) continue;
 
-    if (!dataStr || !qtd) return;
-    const prod = prodRaw.includes('-') ? prodRaw.split('-').slice(1).join('-').trim() : prodRaw;
-    if (!PRODUTOS_V.includes(prod)) return;
+    var prod = prodRaw.indexOf('-') >= 0
+      ? prodRaw.split('-').slice(1).join('-').trim()
+      : prodRaw;
+    if (PRODUTOS_V.indexOf(prod) < 0) continue;
 
-    if (dataStr > maxDate) maxDate = dataStr;
+    if (ds > maxDate) maxDate = ds;
 
-    // mov_diaria
-    movDia[dataStr] = (movDia[dataStr] || 0) + qtd;
+    // mov por dia
+    movDia[ds] = (movDia[ds] || 0) + qtd;
 
-    // mov_tipo
-    if (!movTipo[dataStr]) movTipo[dataStr] = {CD:0, Fornecedor:0, Loja:0};
-    movTipo[dataStr][tipo] = (movTipo[dataStr][tipo] || 0) + qtd;
-
-    // por_produto (acumulado total)
-    porProd[prod] = (porProd[prod] || 0) + qtd;
+    // mov por tipo
+    if (!movTipo[ds]) movTipo[ds] = {CD:0, Fornecedor:0, Loja:0};
+    movTipo[ds][tipo] = (movTipo[ds][tipo] || 0) + qtd;
 
     // fornecedores
     if (tipo === 'Fornecedor' && empresa) {
-      if (!fornMap[empresa]) fornMap[empresa] = {ultima:'1900-01-01', vol90:0, cds:new Set()};
-      if (dataStr > fornMap[empresa].ultima) fornMap[empresa].ultima = dataStr;
-      fornMap[empresa].cds.add(cd);
+      if (!fornMap[empresa]) fornMap[empresa] = {ultima:'1900-01-01', cds:{}};
+      if (ds > fornMap[empresa].ultima) fornMap[empresa].ultima = ds;
+      fornMap[empresa].cds[cd] = 1;
     }
-  });
+  }
 
-  // Calcular 90 dias a partir da data máxima
-  // Converter maxDate (string yyyy-mm-dd) para objeto Date com segurança
-  const [mY, mM, mD] = maxDate.split('-').map(Number);
-  const hoje = new Date(Date.UTC(mY, mM-1, mD));
-  const d90  = new Date(Date.UTC(mY, mM-1, mD - 90));
-  const d90Str = d90.toISOString().slice(0,10);
-  const periodoInicio = d90Str;
+  if (maxDate === '1900-01-01') throw new Error('Nenhum dado válido encontrado');
 
-  // Filtrar mov_diaria para 90d
-  const mov90 = Object.entries(movDia)
-    .filter(([d]) => d >= d90Str && d <= maxDate)
-    .sort(([a],[b]) => a.localeCompare(b));
+  // Calcular janela 90 dias
+  var mParts = maxDate.split('-');
+  var hojeUTC = new Date(Date.UTC(+mParts[0], +mParts[1]-1, +mParts[2]));
+  var d90UTC  = new Date(Date.UTC(+mParts[0], +mParts[1]-1, +mParts[2]-90));
+  var d90Str  = d90UTC.toISOString().slice(0,10);
 
-  const total90d  = mov90.reduce((s,[,v])=>s+v, 0);
-  const mediaDia  = mov90.length ? Math.round(total90d / mov90.length) : 0;
-  let picoVol=0, picoDia='';
-  mov90.forEach(([d,v]) => { if(v>picoVol){picoVol=v;picoDia=d;} });
-
-  // por_produto filtrado para 90d — recalcular
-  const porProd90 = {};
-  rows.slice(1).forEach(r => {
-    const prodRaw = String(r[6] || '').trim();
-    const qtd     = parseFloat(r[12]) || 0;
-    let dataStr2 = null;
-    const dv2 = r[9];
-    if (typeof dv2 === 'number') {
-      const d2 = new Date(Date.UTC(1900,0,1) + (dv2 > 59 ? dv2-2 : dv2-1)*86400000);
-      dataStr2 = d2.toISOString().slice(0,10);
-    } else if (dv2 instanceof Date) {
-      dataStr2 = dv2.toISOString().slice(0,10);
-    } else if (typeof dv2 === 'string' && dv2.length >= 8) {
-      dataStr2 = dv2.slice(0,10);
-    }
-    const dataStr = dataStr2;
-    if (!dataStr || !qtd) return;
-    const prod = prodRaw.includes('-') ? prodRaw.split('-').slice(1).join('-').trim() : prodRaw;
-    if (!PRODUTOS_V.includes(prod)) return;
-    if (dataStr < d90Str || dataStr > maxDate) return;
+  // Por produto 90d — segundo loop
+  var porProd90 = {};
+  for (var i = 1; i < rows.length; i++) {
+    var r       = rows[i];
+    var prodRaw = String(r[6] || '').trim();
+    var qtd     = parseFloat(r[12]) || 0;
+    var ds      = excelSerialToDate(r[9]);
+    if (!ds || !qtd || ds < d90Str || ds > maxDate) continue;
+    var prod = prodRaw.indexOf('-') >= 0
+      ? prodRaw.split('-').slice(1).join('-').trim()
+      : prodRaw;
+    if (PRODUTOS_V.indexOf(prod) < 0) continue;
     porProd90[prod] = (porProd90[prod] || 0) + qtd;
-  });
+  }
 
-  // mov_tipo array para 90d
-  const movTipoArr = [];
-  Object.entries(movTipo)
-    .filter(([d]) => d >= d90Str && d <= maxDate)
-    .sort(([a],[b]) => a.localeCompare(b))
-    .forEach(([data, v]) => {
-      ['CD','Fornecedor','Loja'].forEach(t => {
-        if (v[t]) movTipoArr.push({'Data Movto': data, 'Tipo': t, 'Qtd Lancamento': v[t]});
-      });
+  // Vol90 por fornecedor — terceiro loop
+  for (var i = 1; i < rows.length; i++) {
+    var r       = rows[i];
+    var tipo    = String(r[0] || '').trim();
+    var empresa = String(r[2] || '').trim();
+    var prodRaw = String(r[6] || '').trim();
+    var qtd     = parseFloat(r[12]) || 0;
+    var ds      = excelSerialToDate(r[9]);
+    var prod = prodRaw.indexOf('-') >= 0
+      ? prodRaw.split('-').slice(1).join('-').trim()
+      : prodRaw;
+    if (tipo !== 'Fornecedor' || !empresa || PRODUTOS_V.indexOf(prod) < 0) continue;
+    if (!ds || ds < d90Str || ds > maxDate) continue;
+    if (!fornMap[empresa]) fornMap[empresa] = {ultima:'1900-01-01', cds:{}, vol90:0};
+    fornMap[empresa].vol90 = (fornMap[empresa].vol90 || 0) + qtd;
+  }
+
+  // Montar mov_diaria 90d
+  var mov90keys = Object.keys(movDia).filter(function(d){ return d>=d90Str && d<=maxDate; }).sort();
+  var movDiaArr = mov90keys.map(function(d){ return {data:d, qtd:Math.round(movDia[d])}; });
+
+  // KPIs
+  var total90 = movDiaArr.reduce(function(s,v){ return s+v.qtd; }, 0);
+  var media   = movDiaArr.length ? Math.round(total90/movDiaArr.length) : 0;
+  var pico    = movDiaArr.reduce(function(a,b){ return b.qtd>a.qtd?b:a; }, {qtd:0,data:''});
+
+  // mov_tipo array
+  var movTipoArr = [];
+  mov90keys.forEach(function(d) {
+    var v = movTipo[d] || {};
+    ['CD','Fornecedor','Loja'].forEach(function(t){
+      if (v[t]) movTipoArr.push({'Data Movto':d,'Tipo':t,'Qtd Lancamento':Math.round(v[t])});
     });
-
-  // vol90 por fornecedor
-  rows.slice(1).forEach(r => {
-    const tipo    = String(r[0]||'').trim();
-    const empresa = String(r[2]||'').trim();
-    const qtd     = parseFloat(r[12]) || 0;
-    let dataStr3 = null;
-    const dv3 = r[9];
-    if (typeof dv3 === 'number') {
-      const d3 = new Date(Date.UTC(1900,0,1) + (dv3 > 59 ? dv3-2 : dv3-1)*86400000);
-      dataStr3 = d3.toISOString().slice(0,10);
-    } else if (dv3 instanceof Date) {
-      dataStr3 = dv3.toISOString().slice(0,10);
-    } else if (typeof dv3 === 'string' && dv3.length >= 8) {
-      dataStr3 = dv3.slice(0,10);
-    }
-    const dataStr = dataStr3;
-    const prodRaw = String(r[6]||'').trim();
-    const prod    = prodRaw.includes('-') ? prodRaw.split('-').slice(1).join('-').trim() : prodRaw;
-    if (tipo !== 'Fornecedor' || !empresa || !PRODUTOS_V.includes(prod)) return;
-    if (!dataStr || dataStr < d90Str || dataStr > maxDate) return;
-    if (fornMap[empresa]) fornMap[empresa].vol90 = (fornMap[empresa].vol90||0) + qtd;
   });
 
-  // Fornecedores com status
-  const hojeMs   = hoje.getTime();
-  const fornList = Object.entries(fornMap).map(([nome, v]) => {
-    const [uY,uM,uD] = v.ultima.split('-').map(Number);
-    const ultMs   = new Date(Date.UTC(uY, uM-1, uD)).getTime();
-    const diasSem = Math.round((hojeMs - ultMs) / 86400000);
-    const status  = diasSem > 21 ? 'CRÍTICO' : diasSem > 7 ? 'ATENÇÃO' : 'OK';
-    return { fornecedor: nome, ultima_data: v.ultima, dias_sem_mov: diasSem,
-             status, volume_90d: v.vol90, num_cds: v.cds.size };
-  }).sort((a,b) => b.dias_sem_mov - a.dias_sem_mov);
+  // por_produto array
+  var porProdArr = PRODUTOS_V
+    .filter(function(p){ return porProd90[p]; })
+    .map(function(p){ return {produto:p, qtd:Math.round(porProd90[p])}; })
+    .sort(function(a,b){ return b.qtd-a.qtd; });
 
-  const criticos  = fornList.filter(f=>f.status==='CRÍTICO').length;
-  const atencao   = fornList.filter(f=>f.status==='ATENÇÃO').length;
-  const okCount   = fornList.filter(f=>f.status==='OK').length;
+  // fornecedores array
+  var hojeMs = hojeUTC.getTime();
+  var fornList = Object.keys(fornMap).map(function(nome) {
+    var v = fornMap[nome];
+    var uParts = v.ultima.split('-');
+    var ultMs  = new Date(Date.UTC(+uParts[0],+uParts[1]-1,+uParts[2])).getTime();
+    var dias   = Math.round((hojeMs-ultMs)/86400000);
+    var status = dias>21?'CRÍTICO':dias>7?'ATENÇÃO':'OK';
+    return {
+      fornecedor: nome,
+      ultima_data: v.ultima,
+      dias_sem_mov: dias,
+      status: status,
+      volume_90d: v.vol90||0,
+      num_cds: Object.keys(v.cds).length
+    };
+  }).sort(function(a,b){ return b.dias_sem_mov-a.dias_sem_mov; });
 
-  // Multi-CD
-  const multiCD = fornList.filter(f=>f.num_cds>1)
-    .sort((a,b)=>a.fornecedor.localeCompare(b.fornecedor));
+  var criticos = fornList.filter(function(f){return f.status==='CRÍTICO';}).length;
+  var atencao  = fornList.filter(function(f){return f.status==='ATENÇÃO';}).length;
+  var okCount  = fornList.filter(function(f){return f.status==='OK';}).length;
 
-  // KPIs: pico_volume nos 90d
-  const kpis = {
-    total_90d: Math.round(total90d),
-    media_diaria: mediaDia,
-    pico_volume: Math.round(picoVol),
-    pico_dia: picoDia,
-    criticos, atencao, ok: okCount,
-    total_fornecedores: fornList.length
-  };
-
-  const porProdArr = PRODUTOS_V
-    .filter(p => porProd90[p])
-    .map(p => ({produto: p, qtd: Math.round(porProd90[p])}))
-    .sort((a,b) => b.qtd - a.qtd);
-
-  const movDiaArr = mov90.map(([data, qtd]) => ({data, qtd: Math.round(qtd)}));
+  var multiCD = fornList
+    .filter(function(f){return f.num_cds>1;})
+    .sort(function(a,b){return a.fornecedor.localeCompare(b.fornecedor);});
 
   return {
     data_ref: maxDate,
-    periodo_inicio: periodoInicio,
-    kpis,
+    periodo_inicio: d90Str,
+    kpis: {
+      total_90d: total90,
+      media_diaria: media,
+      pico_volume: Math.round(pico.qtd),
+      pico_dia: pico.data,
+      criticos: criticos,
+      atencao: atencao,
+      ok: okCount,
+      total_fornecedores: fornList.length
+    },
     mov_diaria: movDiaArr,
     por_produto: porProdArr,
     mov_tipo: movTipoArr,
@@ -3988,151 +3979,153 @@ function parsePlanilha(buf) {
   };
 }
 
-// ── HELPERS ────────────────────────────────
+// ═══════════ INJETAR DADOS ═══════════
+function injetarDados(dados) {
+  // Atualizar a variável global DADOS do script principal
+  DADOS = dados;
+  var el = document.getElementById('dados-status');
+  if (el) { el.textContent = '● DADOS: ' + dados.data_ref; el.style.color='#2ecc71'; }
+  if (typeof initDashboard === 'function') initDashboard();
+}
+
+// ═══════════ HELPERS ═══════════
 function setSyncStatus(state, msg) {
-  const dot = document.getElementById('sync-dot');
-  dot.style.background = state==='online'?'#2ecc71':'#5a6070';
-  if (state==='online') dot.style.animation='pulse 2s infinite';
-  else dot.style.animation='none';
-  document.getElementById('sync-txt').textContent = msg;
+  var dot = document.getElementById('sync-dot');
+  if (dot) dot.style.background = state==='online'?'#2ecc71':'#5a6070';
+  var txt = document.getElementById('sync-txt');
+  if (txt) txt.textContent = msg;
 }
 
 function lerArquivo(file, onOk, onErr) {
-  const rd = new FileReader();
-  rd.onload = e => { try { onOk(parsePlanilha(e.target.result)); } catch(err) { onErr(err.message); } };
+  var rd = new FileReader();
+  rd.onload = function(e) {
+    try { onOk(parsePlanilha(e.target.result)); }
+    catch(err) { onErr(err.message); }
+  };
   rd.readAsArrayBuffer(file);
 }
 
-function injetarDados(dados) {
-  window.DADOS = dados;
-  DADOS = dados;
-  const el = document.getElementById('dados-status');
-  if (el) { el.textContent = '● DADOS: ' + dados.data_ref; el.style.color = '#2ecc71'; }
-  if (typeof window.initDashboard === 'function') window.initDashboard();
-}
-
-// ── TELA INICIAL ───────────────────────────
-document.getElementById('file-main').addEventListener('change', e => {
-  const card = document.getElementById('upload-card');
+// ═══════════ UPLOAD INICIAL ═══════════
+document.getElementById('file-main').addEventListener('change', function(e) {
   lerArquivo(e.target.files[0],
-    rows => {
+    function(rows) {
       pendData = rows;
-      document.getElementById('up-status').textContent = `✓ ${rows.mov_diaria.length} dias · ${rows.kpis.total_fornecedores} fornecedores`;
-      document.getElementById('up-status').style.color = '#2ecc71';
-      card.style.borderColor = '#2ecc71';
-      const btn = document.getElementById('btn-gerar');
+      var el = document.getElementById('up-status');
+      el.textContent = '✓ ' + rows.mov_diaria.length + ' dias · ' + rows.kpis.total_fornecedores + ' fornecedores · ref: ' + rows.data_ref;
+      el.style.color = '#2ecc71';
+      document.getElementById('upload-card').style.borderColor = '#2ecc71';
+      var btn = document.getElementById('btn-gerar');
       btn.style.opacity='1'; btn.style.pointerEvents='all';
     },
-    msg => {
-      document.getElementById('up-status').textContent = '✗ ' + msg;
-      document.getElementById('up-status').style.color = '#e74c3c';
+    function(msg) {
+      var el = document.getElementById('up-status');
+      el.textContent = '✗ ' + msg; el.style.color = '#e74c3c';
     }
   );
 });
 
-window.entrarComUpload = async function() {
+function entrarComUpload() {
   document.getElementById('upload-screen').style.display = 'none';
   document.getElementById('sync-bar').style.display = 'flex';
   injetarDados(pendData);
   document.getElementById('btn-salvar').style.display = '';
-  setSyncStatus('online', 'Upload carregado · ' + pendData.data_ref + ' · clique em SALVAR');
-};
-
-window.entrarVisualizador = async function() {
-  document.getElementById('upload-screen').style.display = 'none';
-  document.getElementById('sync-bar').style.display = 'flex';
-  setSyncStatus('load','Carregando do servidor...');
-  const ok = await carregarFirebase(true);
-  if (!ok) {
-    document.getElementById('upload-screen').style.display = 'flex';
-    setSyncStatus('off','Sem dados no servidor. Faça o primeiro upload.');
-  }
-};
-
-// ── FIREBASE ───────────────────────────────
-async function carregarFirebase(injetar) {
-  try {
-    const snap = await get(ref(db, 'caixas_dashboard'));
-    if (snap.exists()) {
-      const dados = snap.val();
-      if (injetar) {
-        injetarDados(dados);
-        setSyncStatus('online', `Online · atualizado em: ${dados.data_ref}`);
-        document.getElementById('sync-ultima').textContent = `Ref: ${dados.data_ref}`;
-      }
-      return true;
-    }
-    return false;
-  } catch(e) {
-    setSyncStatus('off','Servidor indisponível');
-    console.error(e);
-    return false;
-  }
+  setSyncStatus('online', 'Upload carregado · ' + pendData.data_ref + ' · clique em SALVAR para compartilhar');
 }
 
-window.salvarFirebase = async function() {
-  const btn = document.getElementById('btn-salvar');
-  btn.disabled=true; btn.textContent='Salvando...';
-  try {
-    await set(ref(db,'caixas_dashboard'), pendData);
-    pendData = null;
-    btn.style.display='none';
-    btn.disabled=false; btn.textContent='💾 SALVAR NO SERVIDOR';
-    setSyncStatus('online','Dados salvos! Link compartilhável já está atualizado.');
-    document.getElementById('sync-ultima').textContent = `Ref: ${window.DADOS.data_ref}`;
-  } catch(e) {
-    alert('Erro ao salvar: '+e.message);
-    btn.disabled=false; btn.textContent='💾 SALVAR NO SERVIDOR';
-  }
-};
+function entrarVisualizador() {
+  document.getElementById('upload-screen').style.display = 'none';
+  document.getElementById('sync-bar').style.display = 'flex';
+  setSyncStatus('load', 'Carregando do servidor...');
+  carregarFirebase();
+}
+
+// ═══════════ FIREBASE ═══════════
+function carregarFirebase() {
+  db.ref('caixas_dashboard').once('value')
+    .then(function(snap) {
+      if (snap.exists()) {
+        var dados = snap.val();
+        injetarDados(dados);
+        setSyncStatus('online', 'Online · ref: ' + dados.data_ref);
+        var ul = document.getElementById('sync-ultima');
+        if (ul) ul.textContent = 'Atualizado: ' + dados.data_ref;
+      } else {
+        document.getElementById('upload-screen').style.display = 'flex';
+        setSyncStatus('off', 'Sem dados no servidor — faça o primeiro upload');
+      }
+    })
+    .catch(function(e) {
+      document.getElementById('upload-screen').style.display = 'flex';
+      setSyncStatus('off', 'Servidor indisponível');
+    });
+}
+
+function salvarFirebase() {
+  if (!pendData && !DADOS) return;
+  var dados = pendData || DADOS;
+  var btn = document.getElementById('btn-salvar');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  db.ref('caixas_dashboard').set(dados)
+    .then(function() {
+      pendData = null;
+      btn.style.display = 'none';
+      btn.disabled = false; btn.textContent = '💾 SALVAR NO SERVIDOR';
+      setSyncStatus('online', 'Dados salvos! Link compartilhável atualizado · ref: ' + dados.data_ref);
+    })
+    .catch(function(e) {
+      alert('Erro ao salvar: ' + e.message);
+      btn.disabled = false; btn.textContent = '💾 SALVAR NO SERVIDOR';
+    });
+}
 
 // ── MODAL ──────────────────────────────────
-window.abrirUploadModal = function() {
-  document.getElementById('mfile-main').value='';
-  document.getElementById('mstatus').textContent='';
-  document.getElementById('modal-card').style.borderColor='#1e222e';
-  const btnS=document.getElementById('btn-modal-save'); btnS.disabled=true; btnS.style.opacity='.4';
-  document.getElementById('modal-upload').style.display='flex';
-};
-window.fecharModal = function() { document.getElementById('modal-upload').style.display='none'; };
+function abrirUploadModal() {
+  document.getElementById('mfile-main').value = '';
+  document.getElementById('mstatus').textContent = '';
+  document.getElementById('modal-card').style.borderColor = '#1e222e';
+  var btn = document.getElementById('btn-modal-save'); btn.disabled=true; btn.style.opacity='.4';
+  document.getElementById('modal-upload').style.display = 'flex';
+}
+function fecharModal() { document.getElementById('modal-upload').style.display = 'none'; }
 
-document.getElementById('mfile-main').addEventListener('change', e => {
+document.getElementById('mfile-main').addEventListener('change', function(e) {
   lerArquivo(e.target.files[0],
-    rows => {
+    function(rows) {
       pendData = rows;
-      document.getElementById('mstatus').textContent = `✓ ${rows.mov_diaria.length} dias · ref: ${rows.data_ref}`;
-      document.getElementById('mstatus').style.color='#2ecc71';
-      document.getElementById('modal-card').style.borderColor='#2ecc71';
-      const btn=document.getElementById('btn-modal-save'); btn.disabled=false; btn.style.opacity='1';
+      var el = document.getElementById('mstatus');
+      el.textContent = '✓ ' + rows.mov_diaria.length + ' dias · ref: ' + rows.data_ref;
+      el.style.color = '#2ecc71';
+      document.getElementById('modal-card').style.borderColor = '#2ecc71';
+      var btn = document.getElementById('btn-modal-save'); btn.disabled=false; btn.style.opacity='1';
     },
-    msg => {
-      document.getElementById('mstatus').textContent='✗ '+msg;
-      document.getElementById('mstatus').style.color='#e74c3c';
+    function(msg) {
+      var el = document.getElementById('mstatus'); el.textContent='✗ '+msg; el.style.color='#e74c3c';
     }
   );
 });
 
-window.salvarModal = async function() {
-  const btn=document.getElementById('btn-modal-save');
+function salvarModal() {
+  if (!pendData) return;
+  var btn = document.getElementById('btn-modal-save');
   btn.disabled=true; btn.textContent='Salvando...';
-  try {
-    await set(ref(db,'caixas_dashboard'), pendData);
-    injetarDados(pendData);
-    fecharModal();
-    setSyncStatus('online','Dados atualizados com sucesso!');
-    document.getElementById('sync-ultima').textContent = `Ref: ${pendData.data_ref}`;
-    pendData = null;
-  } catch(e) {
-    alert('Erro: '+e.message);
-    btn.disabled=false; btn.textContent='Salvar no Servidor';
-  }
-};
+  db.ref('caixas_dashboard').set(pendData)
+    .then(function() {
+      injetarDados(pendData);
+      fecharModal();
+      setSyncStatus('online','Dados atualizados! ref: ' + pendData.data_ref);
+      var ul = document.getElementById('sync-ultima'); if(ul) ul.textContent='Atualizado: '+pendData.data_ref;
+      pendData = null;
+      btn.disabled=false; btn.textContent='Salvar no Servidor';
+    })
+    .catch(function(e) {
+      alert('Erro: '+e.message);
+      btn.disabled=false; btn.textContent='Salvar no Servidor';
+    });
+}
 
-// ── INIT ───────────────────────────────────
-// Esconder dashboard até dados estarem prontos
-document.addEventListener('DOMContentLoaded', () => {
-  // Mostrar tela de upload por padrão
-  document.getElementById('upload-screen').style.display = 'flex';
-});
+// ── INIT ──────────────────────────────────
+// Tela de upload aparece por cima do dashboard (position:fixed)
+// O dashboard renderiza com dados embutidos mas fica coberto
+// Ao entrar, injetarDados substitui DADOS e re-renderiza
 </script>
 </body></html>
