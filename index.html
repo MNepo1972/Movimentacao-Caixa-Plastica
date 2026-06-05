@@ -514,7 +514,6 @@
 </head>
 <body>
 
-<div id="app-wrapper" style="display:none;width:100%;height:100vh;">
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="logo">
@@ -3734,9 +3733,8 @@ function renderFornTable() {
 
 
 
-</div><!-- /app-wrapper -->
 <!-- ═══ TELA DE UPLOAD ═══ -->
-<div id="upload-screen" style="display:none;position:fixed;inset:0;background:#0a0c10;z-index:9999;
+<div id="upload-screen" style="display:flex;position:fixed;inset:0;background:#0a0c10;z-index:9999;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;font-family:'Exo 2',sans-serif;">
   <div style="font-size:28px;font-weight:900;color:#3b82f6;letter-spacing:1px;">CAIXAS PLÁSTICAS · OBA</div>
   <div style="font-size:13px;color:#5a6070;letter-spacing:.5px;">Movimentação Diária · CD Sumaré/SP</div>
@@ -4010,8 +4008,6 @@ function injetarDados(dados) {
   DADOS = dados;
   const el = document.getElementById('dados-status');
   if (el) { el.textContent = '● DADOS: ' + dados.data_ref; el.style.color = '#2ecc71'; }
-  const wrapper = document.getElementById('app-wrapper');
-  if (wrapper) wrapper.style.display = '';
   if (typeof window.initDashboard === 'function') window.initDashboard();
 }
 
@@ -4037,11 +4033,9 @@ document.getElementById('file-main').addEventListener('change', e => {
 window.entrarComUpload = async function() {
   document.getElementById('upload-screen').style.display = 'none';
   document.getElementById('sync-bar').style.display = 'flex';
-  setSyncStatus('load','Carregando base do servidor...');
-  await carregarFirebase(false); // carrega mas não usa — só para ter histórico
   injetarDados(pendData);
   document.getElementById('btn-salvar').style.display = '';
-  setSyncStatus('online', `Dados locais carregados · ${pendData.data_ref}`);
+  setSyncStatus('online', 'Upload carregado · ' + pendData.data_ref + ' · clique em SALVAR');
 };
 
 window.entrarVisualizador = async function() {
