@@ -3809,10 +3809,10 @@ let pendData = null;
 
 // ── PARSE PLANILHA ─────────────────────────
 function parsePlanilha(buf) {
-  const wb   = XLSX.read(buf, {type:'array', cellDates:true});
+  const wb   = XLSX.read(buf, {type:'array', cellDates:false});
   const ws   = wb.Sheets['Base_Saldo'];
   if (!ws) throw new Error('Aba "Base_Saldo" não encontrada');
-  const rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, dateNF:'yyyy-mm-dd'});
+  const rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true});
 
   const movDia   = {};
   const movTipo  = {};
@@ -3827,7 +3827,17 @@ function parsePlanilha(buf) {
     const cd       = r[3];
     const prodRaw  = String(r[6]  || '').trim();
     const qtd      = parseFloat(r[12]) || 0;
-    const dataStr  = r[9] ? String(r[9]).slice(0,10) : null;
+    let dataStr = null;
+    const dv = r[9];
+    if (typeof dv === 'number') {
+      // Serial Excel → data
+      const d = new Date(Date.UTC(1900,0,1) + (dv > 59 ? dv-2 : dv-1)*86400000);
+      dataStr = d.toISOString().slice(0,10);
+    } else if (dv instanceof Date) {
+      dataStr = dv.toISOString().slice(0,10);
+    } else if (typeof dv === 'string' && dv.length >= 8) {
+      dataStr = dv.slice(0,10);
+    }
 
     if (!dataStr || !qtd) return;
     const prod = prodRaw.includes('-') ? prodRaw.split('-').slice(1).join('-').trim() : prodRaw;
@@ -3874,7 +3884,17 @@ function parsePlanilha(buf) {
   rows.slice(1).forEach(r => {
     const prodRaw = String(r[6] || '').trim();
     const qtd     = parseFloat(r[12]) || 0;
-    const dataStr = r[9] ? String(r[9]).slice(0,10) : null;
+    let dataStr2 = null;
+    const dv2 = r[9];
+    if (typeof dv2 === 'number') {
+      const d2 = new Date(Date.UTC(1900,0,1) + (dv2 > 59 ? dv2-2 : dv2-1)*86400000);
+      dataStr2 = d2.toISOString().slice(0,10);
+    } else if (dv2 instanceof Date) {
+      dataStr2 = dv2.toISOString().slice(0,10);
+    } else if (typeof dv2 === 'string' && dv2.length >= 8) {
+      dataStr2 = dv2.slice(0,10);
+    }
+    const dataStr = dataStr2;
     if (!dataStr || !qtd) return;
     const prod = prodRaw.includes('-') ? prodRaw.split('-').slice(1).join('-').trim() : prodRaw;
     if (!PRODUTOS_V.includes(prod)) return;
@@ -3898,7 +3918,17 @@ function parsePlanilha(buf) {
     const tipo    = String(r[0]||'').trim();
     const empresa = String(r[2]||'').trim();
     const qtd     = parseFloat(r[12]) || 0;
-    const dataStr = r[9] ? String(r[9]).slice(0,10) : null;
+    let dataStr3 = null;
+    const dv3 = r[9];
+    if (typeof dv3 === 'number') {
+      const d3 = new Date(Date.UTC(1900,0,1) + (dv3 > 59 ? dv3-2 : dv3-1)*86400000);
+      dataStr3 = d3.toISOString().slice(0,10);
+    } else if (dv3 instanceof Date) {
+      dataStr3 = dv3.toISOString().slice(0,10);
+    } else if (typeof dv3 === 'string' && dv3.length >= 8) {
+      dataStr3 = dv3.slice(0,10);
+    }
+    const dataStr = dataStr3;
     const prodRaw = String(r[6]||'').trim();
     const prod    = prodRaw.includes('-') ? prodRaw.split('-').slice(1).join('-').trim() : prodRaw;
     if (tipo !== 'Fornecedor' || !empresa || !PRODUTOS_V.includes(prod)) return;
