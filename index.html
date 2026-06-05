@@ -3813,6 +3813,10 @@ function parsePlanilha(buf) {
   const ws   = wb.Sheets['Base_Saldo'];
   if (!ws) throw new Error('Aba "Base_Saldo" não encontrada');
   const rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:true});
+  // DEBUG: logar os primeiros valores de data
+  const sample = rows.slice(1,4).map(r => ({tipo: typeof r[9], val: r[9], prod: r[6], qtd: r[12]}));
+  console.log('DEBUG sample:', JSON.stringify(sample));
+  throw new Error('DEBUG: ' + JSON.stringify(sample[0]));
 
   const movDia   = {};
   const movTipo  = {};
