@@ -514,6 +514,7 @@
 </head>
 <body>
 
+<div id="app-wrapper" style="display:none;width:100%;height:100vh;">
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="logo">
@@ -531,12 +532,35 @@
   <div class="data-ref">
     <div>JANELA: 90 dias</div>
     <div>REF: <span id="data-ref-label">2026-06-03</span></div>
-    <div style="margin-top:6px;color:#3b82f6">● DADOS EMBUTIDOS</div>
+    <div style="margin-top:6px;font-size:10px;" id="dados-status">● DADOS EMBUTIDOS</div>
   </div>
 </aside>
 
 <!-- MAIN -->
 <main class="main">
+
+<!-- ═══ SYNC BAR (inserida no topo do dashboard) ═══ -->
+<div id="sync-bar" style="display:none;align-items:center;justify-content:space-between;
+  background:#13161d;border:1px solid #1e222e;border-radius:8px;padding:8px 16px;
+  margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="sync-dot" style="width:7px;height:7px;border-radius:50%;background:#5a6070;flex-shrink:0;"></div>
+    <span id="sync-txt" style="font-size:11px;color:#5a6070;letter-spacing:.5px;">Conectando...</span>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span id="sync-ultima" style="font-size:11px;color:#5a6070;"></span>
+    <button onclick="abrirUploadModal()"
+      style="font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:5px;
+      border:1px solid #3b82f6;color:#3b82f6;background:rgba(59,130,246,.06);cursor:pointer;">
+      ↑ ATUALIZAR DADOS
+    </button>
+    <button id="btn-salvar" onclick="salvarFirebase()" style="display:none;font-size:11px;font-weight:700;
+      letter-spacing:1px;padding:5px 12px;border-radius:5px;border:1px solid #2ecc71;
+      color:#2ecc71;background:rgba(46,204,113,.06);cursor:pointer;">
+      💾 SALVAR NO SERVIDOR
+    </button>
+  </div>
+</div>
 
   <!-- PAGE: MOVIMENTAÇÃO -->
   <div class="page active" id="page-movimentacao">
@@ -3710,6 +3734,7 @@ function renderFornTable() {
 
 
 
+</div><!-- /app-wrapper -->
 <!-- ═══ TELA DE UPLOAD ═══ -->
 <div id="upload-screen" style="display:none;position:fixed;inset:0;background:#0a0c10;z-index:9999;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;font-family:'Exo 2',sans-serif;">
@@ -3736,28 +3761,6 @@ function renderFornTable() {
   </button>
 </div>
 
-<!-- ═══ SYNC BAR (inserida no topo do dashboard) ═══ -->
-<div id="sync-bar" style="display:none;align-items:center;justify-content:space-between;
-  background:#13161d;border:1px solid #1e222e;border-radius:8px;padding:8px 16px;
-  margin-bottom:12px;gap:12px;flex-wrap:wrap;">
-  <div style="display:flex;align-items:center;gap:8px;">
-    <div id="sync-dot" style="width:7px;height:7px;border-radius:50%;background:#5a6070;flex-shrink:0;"></div>
-    <span id="sync-txt" style="font-size:11px;color:#5a6070;letter-spacing:.5px;">Conectando...</span>
-  </div>
-  <div style="display:flex;gap:8px;align-items:center;">
-    <span id="sync-ultima" style="font-size:11px;color:#5a6070;"></span>
-    <button onclick="abrirUploadModal()"
-      style="font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:5px;
-      border:1px solid #3b82f6;color:#3b82f6;background:rgba(59,130,246,.06);cursor:pointer;">
-      ↑ ATUALIZAR DADOS
-    </button>
-    <button id="btn-salvar" onclick="salvarFirebase()" style="display:none;font-size:11px;font-weight:700;
-      letter-spacing:1px;padding:5px 12px;border-radius:5px;border:1px solid #2ecc71;
-      color:#2ecc71;background:rgba(46,204,113,.06);cursor:pointer;">
-      💾 SALVAR NO SERVIDOR
-    </button>
-  </div>
-</div>
 
 <!-- ═══ MODAL ATUALIZAR ═══ -->
 <div id="modal-upload" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);
@@ -4004,7 +4007,11 @@ function lerArquivo(file, onOk, onErr) {
 
 function injetarDados(dados) {
   window.DADOS = dados;
-  // Se o dashboard já foi inicializado, re-inicializa
+  DADOS = dados;
+  const el = document.getElementById('dados-status');
+  if (el) { el.textContent = '● DADOS: ' + dados.data_ref; el.style.color = '#2ecc71'; }
+  const wrapper = document.getElementById('app-wrapper');
+  if (wrapper) wrapper.style.display = '';
   if (typeof window.initDashboard === 'function') window.initDashboard();
 }
 
