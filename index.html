@@ -255,7 +255,18 @@ var sortCobK='dias',sortCobD=-1,sortLojaK='saldo',sortLojaD=-1;
 var fmt=function(n){return Math.round(n).toLocaleString('pt-BR')};
 
 // ====== INIT ======
+function normalizaDados(d){
+  d=d||{};
+  if(!d.fornecedores)d.fornecedores=[];
+  if(!d.lojas)d.lojas=[];
+  if(!d.movDia)d.movDia={};
+  if(!d.modelos)d.modelos={};
+  if(!d.cds)d.cds={'97':'Sumaré','100':'Brasília','124':'Bahia','125':'São Miguel Arcanjo'};
+  if(!d.data_ref)d.data_ref='';
+  return d;
+}
 function initDashboard(){
+  DADOS=normalizaDados(DADOS);
   ['ref1','ref2','ref3'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=fmtRef(DADOS.data_ref)});
   // popular selects CD
   var opts='<option value="">Todos os CDs</option>';
@@ -275,6 +286,7 @@ function showPage(pg,btn){
   document.getElementById('pg-'+pg).classList.add('on');
   document.querySelectorAll('.nav button').forEach(function(b){b.classList.remove('on')});
   btn.classList.add('on');
+  if(pg=='movimentacao'){setTimeout(drawLine,30)}
 }
 
 // ====== COBRANCA ======
@@ -352,7 +364,8 @@ function renderMov(){
   }).join('');
 }
 function periodoDisponivel(){
-  var dias=Object.keys(DADOS.movDia).sort();
+  var md=(DADOS&&DADOS.movDia)?DADOS.movDia:{};
+  var dias=Object.keys(md).sort();
   return dias.length?{min:dias[0],max:dias[dias.length-1]}:{min:'',max:''};
 }
 function presetPeriodo(n){
@@ -365,7 +378,10 @@ function presetPeriodo(n){
   renderMov();
 }
 function drawLine(){
-  var svg=document.getElementById('line-mov');var W=svg.parentElement.offsetWidth-40,H=210,P={t:16,r:12,b:36,l:52};
+  var svg=document.getElementById('line-mov');
+  var pw=svg.parentElement.offsetWidth;
+  if(pw<100){return}
+  var W=pw-40,H=210,P={t:16,r:12,b:36,l:52};
   var pd=periodoDisponivel();
   var ini=document.getElementById('f-ini').value||pd.min;
   var fim=document.getElementById('f-fim').value||pd.max;
@@ -425,7 +441,12 @@ function renderLojas(){
 function carregarFirebase(){
   if(!db){setSync(false,'Offline · usando dados embutidos');return}
   db.ref('caixas_dashboard').once('value').then(function(snap){
-    if(snap.exists()){DADOS=snap.val();setSync(true,'Online · base '+fmtRef(DADOS.data_ref));initDashboard()}
+    if(snap.exists()){
+      var fb=normalizaDados(snap.val());
+      // so usa o do Firebase se tiver fornecedores; senao mantem o embutido
+      if(fb.fornecedores&&fb.fornecedores.length){DADOS=fb;setSync(true,'Online · base '+fmtRef(DADOS.data_ref));initDashboard()}
+      else{setSync(true,'Online · base salva incompleta, usando embutido')}
+    }
     else{setSync(true,'Online · sem dados salvos (usando embutido)')}
   }).catch(function(e){setSync(false,'Erro Firebase · dados embutidos');console.warn(e)});
 }
