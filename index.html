@@ -40,6 +40,8 @@ body{background:var(--bg);color:var(--ink);font-family:'Segoe UI',-apple-system,
 .filtros{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
 .filtros select,.filtros input{padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:13px;color:var(--ink)}
 .filtros label{font-size:12px;color:var(--mut);font-weight:600;margin-right:-4px}
+.fbtn{padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:12px;font-weight:700;color:var(--verde);cursor:pointer}
+.fbtn:hover{background:var(--verde);color:#fff;border-color:var(--verde)}
 /* kpis */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
 .kpi{background:var(--surface);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);border:1px solid var(--line);position:relative;overflow:hidden}
@@ -164,11 +166,18 @@ tr:hover td{background:#fafcf9}
         <div class="pg-desc">Volume girado de caixas. Contexto do fluxo, não do passivo.</div></div>
         <div class="ref">Base: <b id="ref2">—</b></div>
       </div>
-      <div class="filtros"><label>CD</label><select id="f-cd2" onchange="renderMov()"></select></div>
+      <div class="filtros">
+        <label>CD</label><select id="f-cd2" onchange="renderMov()"></select>
+        <label>De</label><input type="date" id="f-ini" onchange="renderMov()">
+        <label>Até</label><input type="date" id="f-fim" onchange="renderMov()">
+        <button class="fbtn" onclick="presetPeriodo(7)">7d</button>
+        <button class="fbtn" onclick="presetPeriodo(30)">30d</button>
+        <button class="fbtn" onclick="presetPeriodo(60)">60d</button>
+      </div>
       <div class="kpis" id="kpi-mov"></div>
       <div class="card">
-        <h3>Movimentação diária · últimos 60 dias</h3>
-        <div class="csub">Entrada e saída somadas por dia.</div>
+        <h3>Movimentação diária</h3>
+        <div class="csub" id="line-sub">Entrada e saída somadas por dia.</div>
         <svg class="linechart" id="line-mov" preserveAspectRatio="none"></svg>
       </div>
       <div class="grid2">
@@ -252,6 +261,10 @@ function initDashboard(){
   var opts='<option value="">Todos os CDs</option>';
   Object.keys(DADOS.cds).forEach(function(k){opts+='<option value="'+k+'">'+DADOS.cds[k]+'</option>'});
   ['f-cd','f-cd2','f-cd3'].forEach(function(id){document.getElementById(id).innerHTML=opts});
+  // inicializa filtro de periodo com a janela disponivel
+  var pd=periodoDisponivel();
+  var fi=document.getElementById('f-ini'),ff=document.getElementById('f-fim');
+  if(fi&&ff){fi.min=pd.min;fi.max=pd.max;ff.min=pd.min;ff.max=pd.max;if(!fi.value)fi.value=pd.min;if(!ff.value)ff.value=pd.max;}
   renderCob();renderMov();renderLojas();
 }
 function fmtRef(s){if(!s)return'—';var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0]}
@@ -338,21 +351,47 @@ function renderMov(){
     return '<div class="barrow"><div class="bn">'+m[0]+'</div><div class="bt"><div class="bf" style="width:'+Math.max(m[1]/mmx*100,8)+'%;background:var(--laranja)">'+fmt(m[1])+'</div></div></div>';
   }).join('');
 }
-function drawLine(){
-  var svg=document.getElementById('line-mov');var W=svg.parentElement.offsetWidth-40,H=200,P={t:16,r:10,b:24,l:48};
+function periodoDisponivel(){
   var dias=Object.keys(DADOS.movDia).sort();
+  return dias.length?{min:dias[0],max:dias[dias.length-1]}:{min:'',max:''};
+}
+function presetPeriodo(n){
+  var pd=periodoDisponivel();if(!pd.max)return;
+  var fim=pd.max;
+  var ini=new Date(new Date(fim)-( n-1)*864e5).toISOString().slice(0,10);
+  if(ini<pd.min)ini=pd.min;
+  document.getElementById('f-ini').value=ini;
+  document.getElementById('f-fim').value=fim;
+  renderMov();
+}
+function drawLine(){
+  var svg=document.getElementById('line-mov');var W=svg.parentElement.offsetWidth-40,H=210,P={t:16,r:12,b:36,l:52};
+  var pd=periodoDisponivel();
+  var ini=document.getElementById('f-ini').value||pd.min;
+  var fim=document.getElementById('f-fim').value||pd.max;
+  var dias=Object.keys(DADOS.movDia).sort().filter(function(d){return d>=ini&&d<=fim});
   var serie=dias.map(function(d){var v=DADOS.movDia[d];return{d:d,t:(v.Fornecedor||0)+(v.Loja||0)+(v.CD||0)}});
-  if(!serie.length){svg.innerHTML='';return}
+  // sub-legenda diz exatamente o periodo mostrado
+  var sub=document.getElementById('line-sub');
+  if(sub)sub.textContent=serie.length?('Entrada e saída por dia · '+fmtRef(ini)+' a '+fmtRef(fim)+' ('+serie.length+' dias)'):'Sem dados no período selecionado.';
+  if(!serie.length){svg.innerHTML='<text x="'+(W/2)+'" y="'+(H/2)+'" font-size="13" fill="#9aa89a" text-anchor="middle">Sem dados neste período</text>';svg.setAttribute('viewBox','0 0 '+W+' '+H);return}
   var max=Math.max.apply(null,serie.map(function(s){return s.t}))||1;
   var iw=W-P.l-P.r,ih=H-P.t-P.b;
-  var x=function(i){return P.l+i/(serie.length-1)*iw};
+  var n=serie.length;
+  var x=function(i){return n>1?P.l+i/(n-1)*iw:P.l+iw/2};
   var y=function(v){return P.t+ih-v/max*ih};
   var path=serie.map(function(s,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(s.t).toFixed(1)}).join(' ');
-  var area=path+' L'+x(serie.length-1).toFixed(1)+' '+(P.t+ih)+' L'+P.l+' '+(P.t+ih)+' Z';
+  var area=path+' L'+x(n-1).toFixed(1)+' '+(P.t+ih)+' L'+x(0).toFixed(1)+' '+(P.t+ih)+' Z';
+  // grid Y
   var grid='';for(var g=0;g<=3;g++){var gy=P.t+ih-g/3*ih,gv=Math.round(max*g/3);grid+='<line x1="'+P.l+'" y1="'+gy+'" x2="'+(W-P.r)+'" y2="'+gy+'" stroke="#eef2ec"/><text x="'+(P.l-8)+'" y="'+(gy+3)+'" font-size="10" fill="#9aa89a" text-anchor="end">'+fmt(gv)+'</text>'}
-  var labs='';for(var i=0;i<serie.length;i+=Math.ceil(serie.length/6)){labs+='<text x="'+x(i)+'" y="'+(H-6)+'" font-size="9" fill="#9aa89a" text-anchor="middle">'+serie[i].d.slice(8)+'/'+serie[i].d.slice(5,7)+'</text>'}
+  // labels X: no maximo 8, rotacionados leve, sem colisao
+  var step=Math.max(1,Math.ceil(n/8));
+  var labs='';for(var i=0;i<n;i+=step){var d=serie[i].d;labs+='<text x="'+x(i)+'" y="'+(H-12)+'" font-size="9.5" fill="#9aa89a" text-anchor="middle">'+d.slice(8)+'/'+d.slice(5,7)+'</text>'}
+  // pontos nos extremos e no pico pra dar referencia
+  var iMax=0;serie.forEach(function(s,i){if(s.t>serie[iMax].t)iMax=i});
+  var dots='<circle cx="'+x(iMax)+'" cy="'+y(serie[iMax].t)+'" r="3.5" fill="var(--laranja)"/><text x="'+x(iMax)+'" y="'+(y(serie[iMax].t)-8)+'" font-size="10" font-weight="700" fill="var(--laranja-esc)" text-anchor="middle">'+fmt(serie[iMax].t)+'</text>';
   svg.setAttribute('viewBox','0 0 '+W+' '+H);
-  svg.innerHTML=grid+'<path d="'+area+'" fill="rgba(244,123,32,.12)"/><path d="'+path+'" fill="none" stroke="var(--laranja)" stroke-width="2.5"/>'+labs;
+  svg.innerHTML=grid+'<path d="'+area+'" fill="rgba(244,123,32,.12)"/><path d="'+path+'" fill="none" stroke="var(--laranja)" stroke-width="2.5" stroke-linejoin="round"/>'+dots+labs;
 }
 
 // ====== LOJAS ======
