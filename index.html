@@ -538,8 +538,9 @@ function parsePlanilha(buf){
   // consolidar fornecedor e loja (somando produtos por nome+cd)
   var fAgg={},lAgg={};
   Object.values(fin).forEach(function(o){
-    var k=o.nome+'|'+o.cd;var tgt=o.tipo=='Fornecedor'?fAgg:lAgg;
-    if(!tgt[k])tgt[k]={nome:o.nome,cnpj:o.emp,cd:o.cd,cdnome:CDN[o.cd]||String(o.cd),saldo:0};
+    var cdv=(o.cd==null||o.cd===''||(typeof o.cd==='number'&&isNaN(o.cd)))?0:o.cd;
+    var k=o.nome+'|'+cdv;var tgt=o.tipo=='Fornecedor'?fAgg:lAgg;
+    if(!tgt[k])tgt[k]={nome:o.nome,cnpj:o.emp||'',cd:cdv,cdnome:CDN[cdv]||(cdv?String(cdv):'Sem CD'),saldo:0};
     tgt[k].saldo+=o.saldo;
   });
   function build(agg,tipo){
@@ -555,12 +556,21 @@ function parsePlanilha(buf){
   return {data_ref:maxDate,fornecedores:forn,lojas:loja,movDia:movDiaT,modelos:modAcc,cds:{'97':'Sumaré','100':'Brasília','124':'Bahia','125':'São Miguel Arcanjo'}};
 }
 
+// remove undefined/NaN recursivamente — Firebase rejeita esses valores
+function limpaFirebase(v){
+  if(v===undefined)return null;
+  if(typeof v==='number'&&isNaN(v))return null;
+  if(Array.isArray(v))return v.map(limpaFirebase);
+  if(v&&typeof v==='object'){var o={};for(var k in v){if(v.hasOwnProperty(k)){var c=limpaFirebase(v[k]);if(c!==undefined)o[k]=c}}return o}
+  return v;
+}
 function salvarFirebase(){
   if(!pendData)return;
   var btn=document.getElementById('btn-salvar');btn.disabled=true;btn.textContent='Salvando...';
   if(!db){setProg(0,'Firebase offline. Não salvo.');btn.textContent='Salvar';return}
-  db.ref('caixas_dashboard').set(pendData).then(function(){
-    DADOS=pendData;pendData=null;initDashboard();setSync(true,'Online · base '+fmtRef(DADOS.data_ref));
+  var limpo=limpaFirebase(pendData);
+  db.ref('caixas_dashboard').set(limpo).then(function(){
+    DADOS=normalizaDados(limpo);pendData=null;initDashboard();setSync(true,'Online · base '+fmtRef(DADOS.data_ref));
     setProg(100,'Salvo no Firebase!');setTimeout(fecharUpload,800);btn.textContent='Salvar';
   }).catch(function(e){setProg(0,'Erro ao salvar: '+e.message);btn.textContent='Salvar';btn.disabled=false});
 }
