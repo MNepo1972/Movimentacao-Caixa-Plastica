@@ -257,12 +257,23 @@ var fmt=function(n){return Math.round(n).toLocaleString('pt-BR')};
 // ====== INIT ======
 function normalizaDados(d){
   d=d||{};
-  if(!d.fornecedores)d.fornecedores=[];
-  if(!d.lojas)d.lojas=[];
-  if(!d.movDia)d.movDia={};
-  if(!d.modelos)d.modelos={};
-  if(!d.cds)d.cds={'97':'Sumaré','100':'Brasília','124':'Bahia','125':'São Miguel Arcanjo'};
+  if(!Array.isArray(d.fornecedores))d.fornecedores=[];
+  if(!Array.isArray(d.lojas))d.lojas=[];
+  if(!d.movDia||typeof d.movDia!=='object')d.movDia={};
+  if(!d.modelos||typeof d.modelos!=='object')d.modelos={};
+  if(!d.cds||typeof d.cds!=='object')d.cds={'97':'Sumaré','100':'Brasília','124':'Bahia','125':'São Miguel Arcanjo'};
   if(!d.data_ref)d.data_ref='';
+  // sanitiza cada registro: descarta sem nome, preenche campos faltantes
+  function fix(r){
+    if(!r||typeof r!=='object')return null;
+    var nome=r.nome||r.fornecedor||r.loja||r.DescEmpresa||'';
+    if(!nome)return null;
+    return {nome:String(nome),cnpj:r.cnpj||r.emp||r.Empresa||'',cd:r.cd!=null?r.cd:0,
+      cdnome:r.cdnome||String(r.cd||'?'),saldo:+r.saldo||0,dias:+r.dias||0,
+      ult:r.ult||'',vol90:+r.vol90||0,multi:!!r.multi};
+  }
+  d.fornecedores=d.fornecedores.map(fix).filter(Boolean);
+  d.lojas=d.lojas.map(fix).filter(Boolean);
   return d;
 }
 function initDashboard(){
@@ -312,7 +323,7 @@ function renderCob(){
     ['alert','Caixas a recuperar',fmt(critCx),critForn+' fornecedores acima de 21 dias'],
     ['orange','Total em fornecedor',fmt(totCx),all.length+' registros (CNPJ × CD)'],
     ['','Fornecedores em 2 CDs',fmt(multiN),'Sumaré + Brasília'],
-    ['alert','Caso mais antigo',pior?pior.dias+'d':'—',pior?pior.nome.slice(0,26):'']
+    ['alert','Caso mais antigo',pior?pior.dias+'d':'—',(pior&&pior.nome?pior.nome:'').slice(0,26)]
   ].map(function(k){return '<div class="kpi '+k[0]+'"><div class="klbl">'+k[1]+'</div><div class="kval">'+k[2]+'</div><div class="ksub">'+k[3]+'</div></div>'}).join('');
   // faixas
   var fx=[['0-21d',0,21,'var(--ok)'],['22-60d',22,60,'var(--laranja)'],['61-90d',61,90,'var(--warn)'],['90d+',91,99999,'var(--crit)']];
@@ -425,7 +436,7 @@ function renderLojas(){
     ['orange','Caixas em lojas',fmt(totCx),all.length+' lojas'],
     ['','Média por loja',fmt(media),'caixas'],
     ['alert','Lojas paradas',fmt(paradas),'sem mov. há +21d'],
-    ['','Maior saldo',maior?fmt(maior.saldo):'—',maior?maior.nome.slice(0,24):'']
+    ['','Maior saldo',maior?fmt(maior.saldo):'—',(maior&&maior.nome?maior.nome:'').slice(0,24)]
   ].map(function(k){return '<div class="kpi '+k[0]+'"><div class="klbl">'+k[1]+'</div><div class="kval">'+k[2]+'</div><div class="ksub">'+k[3]+'</div></div>'}).join('');
   var d=all.filter(function(r){return r.nome.toLowerCase().indexOf(q)>=0});
   d.sort(function(a,b){var x=a[sortLojaK],y=b[sortLojaK];return (x>y?1:x<y?-1:0)*sortLojaD});
