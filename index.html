@@ -4060,17 +4060,9 @@ function carregarFirebase() {
     });
 }
 
-// remove undefined/NaN recursivamente — Firebase rejeita esses valores
-function limpaFirebase(v){
-  if(v===undefined)return null;
-  if(typeof v==='number'&&isNaN(v))return null;
-  if(Array.isArray(v))return v.map(limpaFirebase);
-  if(v&&typeof v==='object'){var o={};for(var k in v){if(v.hasOwnProperty(k)){var c=limpaFirebase(v[k]);if(c!==undefined)o[k]=c}}return o}
-  return v;
-}
 function salvarFirebase() {
   if (!pendData && !DADOS) return;
-  var dados = limpaFirebase(pendData || DADOS);
+  var dados = pendData || DADOS;
   var btn = document.getElementById('btn-salvar');
   btn.disabled = true; btn.textContent = 'Salvando...';
   db.ref('caixas_dashboard').set(dados)
@@ -4116,14 +4108,12 @@ function salvarModal() {
   if (!pendData) return;
   var btn = document.getElementById('btn-modal-save');
   btn.disabled=true; btn.textContent='Salvando...';
-  var limpo = limpaFirebase(pendData);
-  db.ref('caixas_dashboard').set(limpo)
-  db.ref('caixas_dashboard').set(limpo)
+  db.ref('caixas_dashboard').set(pendData)
     .then(function() {
-      injetarDados(limpo);
+      injetarDados(pendData);
       fecharModal();
-      setSyncStatus('online','Dados atualizados! ref: ' + limpo.data_ref);
-      var ul = document.getElementById('sync-ultima'); if(ul) ul.textContent='Atualizado: '+limpo.data_ref;
+      setSyncStatus('online','Dados atualizados! ref: ' + pendData.data_ref);
+      var ul = document.getElementById('sync-ultima'); if(ul) ul.textContent='Atualizado: '+pendData.data_ref;
       pendData = null;
       btn.disabled=false; btn.textContent='Salvar no Servidor';
     })
