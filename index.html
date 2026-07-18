@@ -10,23 +10,25 @@
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap');
 
   :root {
-    --bg: #0a0d12;
-    --surface: #111620;
-    --surface2: #171d2b;
-    --border: #1e2738;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --ok: #10b981;
-    --ok-dim: rgba(16,185,129,0.12);
-    --warn: #f59e0b;
-    --warn-dim: rgba(245,158,11,0.12);
-    --crit: #ef4444;
-    --crit-dim: rgba(239,68,68,0.12);
-    --accent: #3b82f6;
-    --accent-dim: rgba(59,130,246,0.12);
-    --cd: #8b5cf6;
-    --forn: #06b6d4;
-    --loja: #f59e0b;
+    --bg: #F6F4EF;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE5;
+    --border: #E3DED3;
+    --text: #1F3A10;
+    --muted: #8A9179;
+    --ok: #2D5016;
+    --ok-dim: rgba(45,80,22,0.10);
+    --warn: #C05621;
+    --warn-dim: rgba(247,127,0,0.12);
+    --crit: #D64545;
+    --crit-dim: rgba(214,69,69,0.10);
+    --accent: #2F6F8F;
+    --accent-dim: rgba(47,111,143,0.10);
+    --cd: #6B4E96;
+    --forn: #1F7A6E;
+    --loja: #C05621;
+    --brand: #FF6B35;
+    --shadow: 0 1px 2px rgba(31,58,16,.04),0 4px 16px rgba(31,58,16,.06);
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -51,6 +53,7 @@
     position: fixed;
     top: 0; left: 0; bottom: 0;
     z-index: 100;
+    box-shadow: var(--shadow);
   }
 
   .logo {
@@ -224,6 +227,7 @@
     position: relative;
     overflow: hidden;
     transition: border-color 0.2s;
+    box-shadow: var(--shadow);
   }
 
   .kpi-card:hover { border-color: var(--accent); }
@@ -275,6 +279,7 @@
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 20px;
+    box-shadow: var(--shadow);
   }
 
   .chart-title {
@@ -452,8 +457,8 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: rgba(139,92,246,0.15);
-    color: #a78bfa;
+    background: rgba(123,94,167,0.15);
+    color: #6B4E96;
     padding: 2px 8px;
     border-radius: 10px;
     font-size: 10px;
@@ -471,16 +476,16 @@
   .cd-tooltip { position:relative; display:inline-block; cursor:help; }
   .cd-tooltip .cd-tip {
     display:none; position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
-    background:#1e2738; border:1px solid #2d3f5a; color:#e2e8f0;
+    background:#E3DED3; border:1px solid #D9D3C6; color:#1F3A10;
     font-size:10px; font-family:'DM Mono',monospace; white-space:nowrap;
     padding:6px 10px; border-radius:6px; z-index:200;
-    box-shadow:0 4px 16px rgba(0,0,0,.5);
+    box-shadow:var(--shadow);
     pointer-events:none;
   }
   .cd-tooltip:hover .cd-tip { display:block; }
   .cd-tooltip .cd-tip::after {
     content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
-    border:5px solid transparent; border-top-color:#2d3f5a;
+    border:5px solid transparent; border-top-color:#D9D3C6;
   }
 
   /* SELECT NATIVO FORNECEDORES */
@@ -492,8 +497,8 @@
     cursor: pointer;
   }
   #select-forn option:checked {
-    background: rgba(59,130,246,0.25);
-    color: #60a5fa;
+    background: rgba(47,111,143,0.25);
+    color: #2F6F8F;
     font-weight: 700;
   }
   #select-forn:focus { border-color: var(--accent); }
@@ -540,22 +545,22 @@
 
 <!-- ═══ SYNC BAR (inserida no topo do dashboard) ═══ -->
 <div id="sync-bar" style="display:none;align-items:center;justify-content:space-between;
-  background:#13161d;border:1px solid #1e222e;border-radius:8px;padding:8px 16px;
+  background:#FFFFFF;border:1px solid #E3DED3;border-radius:8px;padding:8px 16px;
   margin-bottom:12px;gap:12px;flex-wrap:wrap;">
   <div style="display:flex;align-items:center;gap:8px;">
-    <div id="sync-dot" style="width:7px;height:7px;border-radius:50%;background:#5a6070;flex-shrink:0;"></div>
-    <span id="sync-txt" style="font-size:11px;color:#5a6070;letter-spacing:.5px;">Conectando...</span>
+    <div id="sync-dot" style="width:7px;height:7px;border-radius:50%;background:#8A9179;flex-shrink:0;"></div>
+    <span id="sync-txt" style="font-size:11px;color:#8A9179;letter-spacing:.5px;">Conectando...</span>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
-    <span id="sync-ultima" style="font-size:11px;color:#5a6070;"></span>
+    <span id="sync-ultima" style="font-size:11px;color:#8A9179;"></span>
     <button onclick="abrirUploadModal()"
       style="font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:5px;
-      border:1px solid #3b82f6;color:#3b82f6;background:rgba(59,130,246,.06);cursor:pointer;">
+      border:1px solid #2F6F8F;color:#2F6F8F;background:rgba(47,111,143,.06);cursor:pointer;">
       ↑ ATUALIZAR DADOS
     </button>
     <button id="btn-salvar" onclick="salvarFirebase()" style="display:none;font-size:11px;font-weight:700;
-      letter-spacing:1px;padding:5px 12px;border-radius:5px;border:1px solid #2ecc71;
-      color:#2ecc71;background:rgba(46,204,113,.06);cursor:pointer;">
+      letter-spacing:1px;padding:5px 12px;border-radius:5px;border:1px solid #52B788;
+      color:#52B788;background:rgba(82,183,136,.06);cursor:pointer;">
       💾 SALVAR NO SERVIDOR
     </button>
   </div>
@@ -594,32 +599,32 @@
       <div id="pills-tipo" style="display:flex;gap:8px;flex-wrap:wrap"><span onclick="toggleTipo(&#39;CD&#39;)" style="
       display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:6px;
       font-size:11px;font-weight:700;cursor:pointer;font-family:&#39;DM Mono&#39;,monospace;
-      border:1.5px solid #8b5cf6;
-      background:#8b5cf626;
-      color:#8b5cf6;
+      border:1.5px solid #7B5EA7;
+      background:#7B5EA726;
+      color:#7B5EA7;
       transition:all .15s;
     ">
-      <span style="width:7px;height:7px;border-radius:50%;background:#8b5cf6"></span>
+      <span style="width:7px;height:7px;border-radius:50%;background:#7B5EA7"></span>
       CD
     </span><span onclick="toggleTipo(&#39;Fornecedor&#39;)" style="
       display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:6px;
       font-size:11px;font-weight:700;cursor:pointer;font-family:&#39;DM Mono&#39;,monospace;
-      border:1.5px solid #06b6d4;
-      background:#06b6d426;
-      color:#06b6d4;
+      border:1.5px solid #2A9D8F;
+      background:#2A9D8F26;
+      color:#2A9D8F;
       transition:all .15s;
     ">
-      <span style="width:7px;height:7px;border-radius:50%;background:#06b6d4"></span>
+      <span style="width:7px;height:7px;border-radius:50%;background:#2A9D8F"></span>
       Fornecedor
     </span><span onclick="toggleTipo(&#39;Loja&#39;)" style="
       display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:6px;
       font-size:11px;font-weight:700;cursor:pointer;font-family:&#39;DM Mono&#39;,monospace;
-      border:1.5px solid #f59e0b;
-      background:#f59e0b26;
-      color:#f59e0b;
+      border:1.5px solid #C05621;
+      background:#C0562126;
+      color:#C05621;
       transition:all .15s;
     ">
-      <span style="width:7px;height:7px;border-radius:50%;background:#f59e0b"></span>
+      <span style="width:7px;height:7px;border-radius:50%;background:#C05621"></span>
       Loja
     </span></div>
     </div>
@@ -676,44 +681,44 @@
       <div class="chart-title"><span>Volume por Modelo de Caixa (90 dias)</span></div>
       <div id="barras-produto" style="padding:4px 0">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO M">MOD. M</div>
+        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#6E7A5E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO M">MOD. M</div>
         <div style="flex:1;background:var(--surface2);border-radius:4px;height:20px;overflow:hidden;position:relative">
-          <div style="width:65%;height:100%;background:#8b5cf6;border-radius:4px;transition:width .5s ease"></div>
+          <div style="width:65%;height:100%;background:#7B5EA7;border-radius:4px;transition:width .5s ease"></div>
         </div>
         <div style="flex:0 0 110px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text);font-weight:700">4.780.843</div>
-        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#8b5cf6">65%</div>
+        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#7B5EA7">65%</div>
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO P">MOD. P</div>
+        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#6E7A5E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO P">MOD. P</div>
         <div style="flex:1;background:var(--surface2);border-radius:4px;height:20px;overflow:hidden;position:relative">
-          <div style="width:27%;height:100%;background:#06b6d4;border-radius:4px;transition:width .5s ease"></div>
+          <div style="width:27%;height:100%;background:#2A9D8F;border-radius:4px;transition:width .5s ease"></div>
         </div>
         <div style="flex:0 0 110px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text);font-weight:700">1.951.775</div>
-        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#06b6d4">27%</div>
+        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#2A9D8F">27%</div>
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO G">MOD. G</div>
+        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#6E7A5E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO G">MOD. G</div>
         <div style="flex:1;background:var(--surface2);border-radius:4px;height:20px;overflow:hidden;position:relative">
-          <div style="width:7%;height:100%;background:#f59e0b;border-radius:4px;transition:width .5s ease"></div>
+          <div style="width:7%;height:100%;background:#C05621;border-radius:4px;transition:width .5s ease"></div>
         </div>
         <div style="flex:0 0 110px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text);font-weight:700">489.167</div>
-        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#f59e0b">7%</div>
+        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#C05621">7%</div>
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO CARADORI">MOD. CARADORI</div>
+        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#6E7A5E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO CARADORI">MOD. CARADORI</div>
         <div style="flex:1;background:var(--surface2);border-radius:4px;height:20px;overflow:hidden;position:relative">
-          <div style="width:1%;height:100%;background:#3b82f6;border-radius:4px;transition:width .5s ease"></div>
+          <div style="width:1%;height:100%;background:#2F6F8F;border-radius:4px;transition:width .5s ease"></div>
         </div>
         <div style="flex:0 0 110px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text);font-weight:700">84.937</div>
-        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#3b82f6">1%</div>
+        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#2F6F8F">1%</div>
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO VERDE">MOD. VERDE</div>
+        <div style="flex:0 0 130px;font-size:11px;font-family:&#39;DM Mono&#39;,monospace;color:#6E7A5E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="CAIXA PLASTICA MODELO VERDE">MOD. VERDE</div>
         <div style="flex:1;background:var(--surface2);border-radius:4px;height:20px;overflow:hidden;position:relative">
-          <div style="width:1%;height:100%;background:#10b981;border-radius:4px;transition:width .5s ease"></div>
+          <div style="width:1%;height:100%;background:#2D5016;border-radius:4px;transition:width .5s ease"></div>
         </div>
         <div style="flex:0 0 110px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text);font-weight:700">42.490</div>
-        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#10b981">1%</div>
+        <div style="flex:0 0 40px;text-align:right;font-family:&#39;DM Mono&#39;,monospace;font-size:10px;color:#2D5016">1%</div>
       </div></div>
     </div>
 
@@ -728,739 +733,739 @@
           <thead>
             <tr>
               <th onclick="sortTable(&#39;detalhe&#39;,0)">Data ↕</th>
-              <th onclick="sortTable(&#39;detalhe&#39;,1)" style="color:#a78bfa">CD ↕</th>
-              <th onclick="sortTable(&#39;detalhe&#39;,2)" style="color:#22d3ee">Fornecedor ↕</th>
-              <th onclick="sortTable(&#39;detalhe&#39;,3)" style="color:#fbbf24">Loja ↕</th>
+              <th onclick="sortTable(&#39;detalhe&#39;,1)" style="color:#6B4E96">CD ↕</th>
+              <th onclick="sortTable(&#39;detalhe&#39;,2)" style="color:#1F7A6E">Fornecedor ↕</th>
+              <th onclick="sortTable(&#39;detalhe&#39;,3)" style="color:#C05621">Loja ↕</th>
               <th onclick="sortTable(&#39;detalhe&#39;,4)">Total ↕</th>
             </tr>
           </thead>
           <tbody id="tbody-detalhe">
     <tr>
       <td>2026-06-03</td>
-      <td style="color:#a78bfa">0</td>
-      <td style="color:#22d3ee">145</td>
-      <td style="color:#fbbf24">0</td>
-      <td style="font-weight:700;color:#e2e8f0">145</td>
+      <td style="color:#6B4E96">0</td>
+      <td style="color:#1F7A6E">145</td>
+      <td style="color:#C05621">0</td>
+      <td style="font-weight:700;color:#1F3A10">145</td>
     </tr>
   
     <tr>
       <td>2026-06-02</td>
-      <td style="color:#a78bfa">64.620</td>
-      <td style="color:#22d3ee">21.447</td>
-      <td style="color:#fbbf24">15.834</td>
-      <td style="font-weight:700;color:#10b981">101.901</td>
+      <td style="color:#6B4E96">64.620</td>
+      <td style="color:#1F7A6E">21.447</td>
+      <td style="color:#C05621">15.834</td>
+      <td style="font-weight:700;color:#2D5016">101.901</td>
     </tr>
   
     <tr>
       <td>2026-06-01</td>
-      <td style="color:#a78bfa">37.231</td>
-      <td style="color:#22d3ee">24.554</td>
-      <td style="color:#fbbf24">23.132</td>
-      <td style="font-weight:700;color:#10b981">84.917</td>
+      <td style="color:#6B4E96">37.231</td>
+      <td style="color:#1F7A6E">24.554</td>
+      <td style="color:#C05621">23.132</td>
+      <td style="font-weight:700;color:#2D5016">84.917</td>
     </tr>
   
     <tr>
       <td>2026-05-31</td>
-      <td style="color:#a78bfa">5.187</td>
-      <td style="color:#22d3ee">14.427</td>
-      <td style="color:#fbbf24">890</td>
-      <td style="font-weight:700;color:#e2e8f0">20.504</td>
+      <td style="color:#6B4E96">5.187</td>
+      <td style="color:#1F7A6E">14.427</td>
+      <td style="color:#C05621">890</td>
+      <td style="font-weight:700;color:#1F3A10">20.504</td>
     </tr>
   
     <tr>
       <td>2026-05-30</td>
-      <td style="color:#a78bfa">19.098</td>
-      <td style="color:#22d3ee">7.167</td>
-      <td style="color:#fbbf24">16.180</td>
-      <td style="font-weight:700;color:#e2e8f0">42.445</td>
+      <td style="color:#6B4E96">19.098</td>
+      <td style="color:#1F7A6E">7.167</td>
+      <td style="color:#C05621">16.180</td>
+      <td style="font-weight:700;color:#1F3A10">42.445</td>
     </tr>
   
     <tr>
       <td>2026-05-29</td>
-      <td style="color:#a78bfa">80.878</td>
-      <td style="color:#22d3ee">33.962</td>
-      <td style="color:#fbbf24">19.744</td>
-      <td style="font-weight:700;color:#10b981">134.584</td>
+      <td style="color:#6B4E96">80.878</td>
+      <td style="color:#1F7A6E">33.962</td>
+      <td style="color:#C05621">19.744</td>
+      <td style="font-weight:700;color:#2D5016">134.584</td>
     </tr>
   
     <tr>
       <td>2026-05-28</td>
-      <td style="color:#a78bfa">74.117</td>
-      <td style="color:#22d3ee">33.413</td>
-      <td style="color:#fbbf24">17.652</td>
-      <td style="font-weight:700;color:#10b981">125.182</td>
+      <td style="color:#6B4E96">74.117</td>
+      <td style="color:#1F7A6E">33.413</td>
+      <td style="color:#C05621">17.652</td>
+      <td style="font-weight:700;color:#2D5016">125.182</td>
     </tr>
   
     <tr>
       <td>2026-05-27</td>
-      <td style="color:#a78bfa">29.181</td>
-      <td style="color:#22d3ee">30.323</td>
-      <td style="color:#fbbf24">17.529</td>
-      <td style="font-weight:700;color:#e2e8f0">77.033</td>
+      <td style="color:#6B4E96">29.181</td>
+      <td style="color:#1F7A6E">30.323</td>
+      <td style="color:#C05621">17.529</td>
+      <td style="font-weight:700;color:#1F3A10">77.033</td>
     </tr>
   
     <tr>
       <td>2026-05-26</td>
-      <td style="color:#a78bfa">29.722</td>
-      <td style="color:#22d3ee">30.343</td>
-      <td style="color:#fbbf24">16.491</td>
-      <td style="font-weight:700;color:#e2e8f0">76.556</td>
+      <td style="color:#6B4E96">29.722</td>
+      <td style="color:#1F7A6E">30.343</td>
+      <td style="color:#C05621">16.491</td>
+      <td style="font-weight:700;color:#1F3A10">76.556</td>
     </tr>
   
     <tr>
       <td>2026-05-25</td>
-      <td style="color:#a78bfa">36.995</td>
-      <td style="color:#22d3ee">29.314</td>
-      <td style="color:#fbbf24">24.514</td>
-      <td style="font-weight:700;color:#10b981">90.823</td>
+      <td style="color:#6B4E96">36.995</td>
+      <td style="color:#1F7A6E">29.314</td>
+      <td style="color:#C05621">24.514</td>
+      <td style="font-weight:700;color:#2D5016">90.823</td>
     </tr>
   
     <tr>
       <td>2026-05-24</td>
-      <td style="color:#a78bfa">4.185</td>
-      <td style="color:#22d3ee">17.215</td>
-      <td style="color:#fbbf24">188</td>
-      <td style="font-weight:700;color:#e2e8f0">21.588</td>
+      <td style="color:#6B4E96">4.185</td>
+      <td style="color:#1F7A6E">17.215</td>
+      <td style="color:#C05621">188</td>
+      <td style="font-weight:700;color:#1F3A10">21.588</td>
     </tr>
   
     <tr>
       <td>2026-05-23</td>
-      <td style="color:#a78bfa">20.279</td>
-      <td style="color:#22d3ee">12.843</td>
-      <td style="color:#fbbf24">15.276</td>
-      <td style="font-weight:700;color:#e2e8f0">48.398</td>
+      <td style="color:#6B4E96">20.279</td>
+      <td style="color:#1F7A6E">12.843</td>
+      <td style="color:#C05621">15.276</td>
+      <td style="font-weight:700;color:#1F3A10">48.398</td>
     </tr>
   
     <tr>
       <td>2026-05-22</td>
-      <td style="color:#a78bfa">41.126</td>
-      <td style="color:#22d3ee">36.504</td>
-      <td style="color:#fbbf24">30.083</td>
-      <td style="font-weight:700;color:#10b981">107.713</td>
+      <td style="color:#6B4E96">41.126</td>
+      <td style="color:#1F7A6E">36.504</td>
+      <td style="color:#C05621">30.083</td>
+      <td style="font-weight:700;color:#2D5016">107.713</td>
     </tr>
   
     <tr>
       <td>2026-05-21</td>
-      <td style="color:#a78bfa">27.408</td>
-      <td style="color:#22d3ee">57.147</td>
-      <td style="color:#fbbf24">13.469</td>
-      <td style="font-weight:700;color:#10b981">98.024</td>
+      <td style="color:#6B4E96">27.408</td>
+      <td style="color:#1F7A6E">57.147</td>
+      <td style="color:#C05621">13.469</td>
+      <td style="font-weight:700;color:#2D5016">98.024</td>
     </tr>
   
     <tr>
       <td>2026-05-20</td>
-      <td style="color:#a78bfa">1.000</td>
-      <td style="color:#22d3ee">25.012</td>
-      <td style="color:#fbbf24">0</td>
-      <td style="font-weight:700;color:#e2e8f0">26.012</td>
+      <td style="color:#6B4E96">1.000</td>
+      <td style="color:#1F7A6E">25.012</td>
+      <td style="color:#C05621">0</td>
+      <td style="font-weight:700;color:#1F3A10">26.012</td>
     </tr>
   
     <tr>
       <td>2026-05-19</td>
-      <td style="color:#a78bfa">33.379</td>
-      <td style="color:#22d3ee">29.376</td>
-      <td style="color:#fbbf24">15.352</td>
-      <td style="font-weight:700;color:#e2e8f0">78.107</td>
+      <td style="color:#6B4E96">33.379</td>
+      <td style="color:#1F7A6E">29.376</td>
+      <td style="color:#C05621">15.352</td>
+      <td style="font-weight:700;color:#1F3A10">78.107</td>
     </tr>
   
     <tr>
       <td>2026-05-18</td>
-      <td style="color:#a78bfa">28.821</td>
-      <td style="color:#22d3ee">30.513</td>
-      <td style="color:#fbbf24">24.061</td>
-      <td style="font-weight:700;color:#10b981">83.395</td>
+      <td style="color:#6B4E96">28.821</td>
+      <td style="color:#1F7A6E">30.513</td>
+      <td style="color:#C05621">24.061</td>
+      <td style="font-weight:700;color:#2D5016">83.395</td>
     </tr>
   
     <tr>
       <td>2026-05-17</td>
-      <td style="color:#a78bfa">3.653</td>
-      <td style="color:#22d3ee">16.874</td>
-      <td style="color:#fbbf24">548</td>
-      <td style="font-weight:700;color:#e2e8f0">21.075</td>
+      <td style="color:#6B4E96">3.653</td>
+      <td style="color:#1F7A6E">16.874</td>
+      <td style="color:#C05621">548</td>
+      <td style="font-weight:700;color:#1F3A10">21.075</td>
     </tr>
   
     <tr>
       <td>2026-05-16</td>
-      <td style="color:#a78bfa">29.096</td>
-      <td style="color:#22d3ee">12.049</td>
-      <td style="color:#fbbf24">16.071</td>
-      <td style="font-weight:700;color:#e2e8f0">57.216</td>
+      <td style="color:#6B4E96">29.096</td>
+      <td style="color:#1F7A6E">12.049</td>
+      <td style="color:#C05621">16.071</td>
+      <td style="font-weight:700;color:#1F3A10">57.216</td>
     </tr>
   
     <tr>
       <td>2026-05-15</td>
-      <td style="color:#a78bfa">29.207</td>
-      <td style="color:#22d3ee">30.206</td>
-      <td style="color:#fbbf24">15.667</td>
-      <td style="font-weight:700;color:#e2e8f0">75.080</td>
+      <td style="color:#6B4E96">29.207</td>
+      <td style="color:#1F7A6E">30.206</td>
+      <td style="color:#C05621">15.667</td>
+      <td style="font-weight:700;color:#1F3A10">75.080</td>
     </tr>
   
     <tr>
       <td>2026-05-14</td>
-      <td style="color:#a78bfa">35.444</td>
-      <td style="color:#22d3ee">42.568</td>
-      <td style="color:#fbbf24">16.065</td>
-      <td style="font-weight:700;color:#10b981">94.077</td>
+      <td style="color:#6B4E96">35.444</td>
+      <td style="color:#1F7A6E">42.568</td>
+      <td style="color:#C05621">16.065</td>
+      <td style="font-weight:700;color:#2D5016">94.077</td>
     </tr>
   
     <tr>
       <td>2026-05-13</td>
-      <td style="color:#a78bfa">47.232</td>
-      <td style="color:#22d3ee">26.602</td>
-      <td style="color:#fbbf24">14.475</td>
-      <td style="font-weight:700;color:#10b981">88.309</td>
+      <td style="color:#6B4E96">47.232</td>
+      <td style="color:#1F7A6E">26.602</td>
+      <td style="color:#C05621">14.475</td>
+      <td style="font-weight:700;color:#2D5016">88.309</td>
     </tr>
   
     <tr>
       <td>2026-05-12</td>
-      <td style="color:#a78bfa">54.321</td>
-      <td style="color:#22d3ee">29.443</td>
-      <td style="color:#fbbf24">14.430</td>
-      <td style="font-weight:700;color:#10b981">98.194</td>
+      <td style="color:#6B4E96">54.321</td>
+      <td style="color:#1F7A6E">29.443</td>
+      <td style="color:#C05621">14.430</td>
+      <td style="font-weight:700;color:#2D5016">98.194</td>
     </tr>
   
     <tr>
       <td>2026-05-11</td>
-      <td style="color:#a78bfa">78.430</td>
-      <td style="color:#22d3ee">36.928</td>
-      <td style="color:#fbbf24">20.572</td>
-      <td style="font-weight:700;color:#10b981">135.930</td>
+      <td style="color:#6B4E96">78.430</td>
+      <td style="color:#1F7A6E">36.928</td>
+      <td style="color:#C05621">20.572</td>
+      <td style="font-weight:700;color:#2D5016">135.930</td>
     </tr>
   
     <tr>
       <td>2026-05-10</td>
-      <td style="color:#a78bfa">6.848</td>
-      <td style="color:#22d3ee">24.728</td>
-      <td style="color:#fbbf24">386</td>
-      <td style="font-weight:700;color:#e2e8f0">31.962</td>
+      <td style="color:#6B4E96">6.848</td>
+      <td style="color:#1F7A6E">24.728</td>
+      <td style="color:#C05621">386</td>
+      <td style="font-weight:700;color:#1F3A10">31.962</td>
     </tr>
   
     <tr>
       <td>2026-05-09</td>
-      <td style="color:#a78bfa">38.514</td>
-      <td style="color:#22d3ee">27.199</td>
-      <td style="color:#fbbf24">11.599</td>
-      <td style="font-weight:700;color:#e2e8f0">77.312</td>
+      <td style="color:#6B4E96">38.514</td>
+      <td style="color:#1F7A6E">27.199</td>
+      <td style="color:#C05621">11.599</td>
+      <td style="font-weight:700;color:#1F3A10">77.312</td>
     </tr>
   
     <tr>
       <td>2026-05-08</td>
-      <td style="color:#a78bfa">76.506</td>
-      <td style="color:#22d3ee">41.291</td>
-      <td style="color:#fbbf24">12.121</td>
-      <td style="font-weight:700;color:#10b981">129.918</td>
+      <td style="color:#6B4E96">76.506</td>
+      <td style="color:#1F7A6E">41.291</td>
+      <td style="color:#C05621">12.121</td>
+      <td style="font-weight:700;color:#2D5016">129.918</td>
     </tr>
   
     <tr>
       <td>2026-05-07</td>
-      <td style="color:#a78bfa">50.022</td>
-      <td style="color:#22d3ee">43.959</td>
-      <td style="color:#fbbf24">15.382</td>
-      <td style="font-weight:700;color:#10b981">109.363</td>
+      <td style="color:#6B4E96">50.022</td>
+      <td style="color:#1F7A6E">43.959</td>
+      <td style="color:#C05621">15.382</td>
+      <td style="font-weight:700;color:#2D5016">109.363</td>
     </tr>
   
     <tr>
       <td>2026-05-06</td>
-      <td style="color:#a78bfa">49.703</td>
-      <td style="color:#22d3ee">30.978</td>
-      <td style="color:#fbbf24">14.116</td>
-      <td style="font-weight:700;color:#10b981">94.797</td>
+      <td style="color:#6B4E96">49.703</td>
+      <td style="color:#1F7A6E">30.978</td>
+      <td style="color:#C05621">14.116</td>
+      <td style="font-weight:700;color:#2D5016">94.797</td>
     </tr>
   
     <tr>
       <td>2026-05-05</td>
-      <td style="color:#a78bfa">56.402</td>
-      <td style="color:#22d3ee">27.237</td>
-      <td style="color:#fbbf24">15.956</td>
-      <td style="font-weight:700;color:#10b981">99.595</td>
+      <td style="color:#6B4E96">56.402</td>
+      <td style="color:#1F7A6E">27.237</td>
+      <td style="color:#C05621">15.956</td>
+      <td style="font-weight:700;color:#2D5016">99.595</td>
     </tr>
   
     <tr>
       <td>2026-05-04</td>
-      <td style="color:#a78bfa">59.987</td>
-      <td style="color:#22d3ee">23.310</td>
-      <td style="color:#fbbf24">21.167</td>
-      <td style="font-weight:700;color:#10b981">104.464</td>
+      <td style="color:#6B4E96">59.987</td>
+      <td style="color:#1F7A6E">23.310</td>
+      <td style="color:#C05621">21.167</td>
+      <td style="font-weight:700;color:#2D5016">104.464</td>
     </tr>
   
     <tr>
       <td>2026-05-03</td>
-      <td style="color:#a78bfa">5.488</td>
-      <td style="color:#22d3ee">5.244</td>
-      <td style="color:#fbbf24">404</td>
-      <td style="font-weight:700;color:#e2e8f0">11.136</td>
+      <td style="color:#6B4E96">5.488</td>
+      <td style="color:#1F7A6E">5.244</td>
+      <td style="color:#C05621">404</td>
+      <td style="font-weight:700;color:#1F3A10">11.136</td>
     </tr>
   
     <tr>
       <td>2026-05-02</td>
-      <td style="color:#a78bfa">23.200</td>
-      <td style="color:#22d3ee">9.303</td>
-      <td style="color:#fbbf24">13.077</td>
-      <td style="font-weight:700;color:#e2e8f0">45.580</td>
+      <td style="color:#6B4E96">23.200</td>
+      <td style="color:#1F7A6E">9.303</td>
+      <td style="color:#C05621">13.077</td>
+      <td style="font-weight:700;color:#1F3A10">45.580</td>
     </tr>
   
     <tr>
       <td>2026-05-01</td>
-      <td style="color:#a78bfa">26.408</td>
-      <td style="color:#22d3ee">18.427</td>
-      <td style="color:#fbbf24">6.843</td>
-      <td style="font-weight:700;color:#e2e8f0">51.678</td>
+      <td style="color:#6B4E96">26.408</td>
+      <td style="color:#1F7A6E">18.427</td>
+      <td style="color:#C05621">6.843</td>
+      <td style="font-weight:700;color:#1F3A10">51.678</td>
     </tr>
   
     <tr>
       <td>2026-04-30</td>
-      <td style="color:#a78bfa">92.690</td>
-      <td style="color:#22d3ee">23.355</td>
-      <td style="color:#fbbf24">14.570</td>
-      <td style="font-weight:700;color:#10b981">130.615</td>
+      <td style="color:#6B4E96">92.690</td>
+      <td style="color:#1F7A6E">23.355</td>
+      <td style="color:#C05621">14.570</td>
+      <td style="font-weight:700;color:#2D5016">130.615</td>
     </tr>
   
     <tr>
       <td>2026-04-29</td>
-      <td style="color:#a78bfa">36.166</td>
-      <td style="color:#22d3ee">19.317</td>
-      <td style="color:#fbbf24">12.535</td>
-      <td style="font-weight:700;color:#e2e8f0">68.018</td>
+      <td style="color:#6B4E96">36.166</td>
+      <td style="color:#1F7A6E">19.317</td>
+      <td style="color:#C05621">12.535</td>
+      <td style="font-weight:700;color:#1F3A10">68.018</td>
     </tr>
   
     <tr>
       <td>2026-04-28</td>
-      <td style="color:#a78bfa">183.936</td>
-      <td style="color:#22d3ee">14.541</td>
-      <td style="color:#fbbf24">18.796</td>
-      <td style="font-weight:700;color:#10b981">217.273</td>
+      <td style="color:#6B4E96">183.936</td>
+      <td style="color:#1F7A6E">14.541</td>
+      <td style="color:#C05621">18.796</td>
+      <td style="font-weight:700;color:#2D5016">217.273</td>
     </tr>
   
     <tr>
       <td>2026-04-27</td>
-      <td style="color:#a78bfa">51.566</td>
-      <td style="color:#22d3ee">18.938</td>
-      <td style="color:#fbbf24">19.681</td>
-      <td style="font-weight:700;color:#10b981">90.185</td>
+      <td style="color:#6B4E96">51.566</td>
+      <td style="color:#1F7A6E">18.938</td>
+      <td style="color:#C05621">19.681</td>
+      <td style="font-weight:700;color:#2D5016">90.185</td>
     </tr>
   
     <tr>
       <td>2026-04-26</td>
-      <td style="color:#a78bfa">11.929</td>
-      <td style="color:#22d3ee">7.306</td>
-      <td style="color:#fbbf24">535</td>
-      <td style="font-weight:700;color:#e2e8f0">19.770</td>
+      <td style="color:#6B4E96">11.929</td>
+      <td style="color:#1F7A6E">7.306</td>
+      <td style="color:#C05621">535</td>
+      <td style="font-weight:700;color:#1F3A10">19.770</td>
     </tr>
   
     <tr>
       <td>2026-04-25</td>
-      <td style="color:#a78bfa">36.011</td>
-      <td style="color:#22d3ee">14.262</td>
-      <td style="color:#fbbf24">15.280</td>
-      <td style="font-weight:700;color:#e2e8f0">65.553</td>
+      <td style="color:#6B4E96">36.011</td>
+      <td style="color:#1F7A6E">14.262</td>
+      <td style="color:#C05621">15.280</td>
+      <td style="font-weight:700;color:#1F3A10">65.553</td>
     </tr>
   
     <tr>
       <td>2026-04-24</td>
-      <td style="color:#a78bfa">53.281</td>
-      <td style="color:#22d3ee">18.743</td>
-      <td style="color:#fbbf24">14.073</td>
-      <td style="font-weight:700;color:#10b981">86.097</td>
+      <td style="color:#6B4E96">53.281</td>
+      <td style="color:#1F7A6E">18.743</td>
+      <td style="color:#C05621">14.073</td>
+      <td style="font-weight:700;color:#2D5016">86.097</td>
     </tr>
   
     <tr>
       <td>2026-04-23</td>
-      <td style="color:#a78bfa">46.210</td>
-      <td style="color:#22d3ee">22.245</td>
-      <td style="color:#fbbf24">14.543</td>
-      <td style="font-weight:700;color:#10b981">82.998</td>
+      <td style="color:#6B4E96">46.210</td>
+      <td style="color:#1F7A6E">22.245</td>
+      <td style="color:#C05621">14.543</td>
+      <td style="font-weight:700;color:#2D5016">82.998</td>
     </tr>
   
     <tr>
       <td>2026-04-22</td>
-      <td style="color:#a78bfa">56.629</td>
-      <td style="color:#22d3ee">18.144</td>
-      <td style="color:#fbbf24">14.062</td>
-      <td style="font-weight:700;color:#10b981">88.835</td>
+      <td style="color:#6B4E96">56.629</td>
+      <td style="color:#1F7A6E">18.144</td>
+      <td style="color:#C05621">14.062</td>
+      <td style="font-weight:700;color:#2D5016">88.835</td>
     </tr>
   
     <tr>
       <td>2026-04-21</td>
-      <td style="color:#a78bfa">33.218</td>
-      <td style="color:#22d3ee">19.147</td>
-      <td style="color:#fbbf24">9.610</td>
-      <td style="font-weight:700;color:#e2e8f0">61.975</td>
+      <td style="color:#6B4E96">33.218</td>
+      <td style="color:#1F7A6E">19.147</td>
+      <td style="color:#C05621">9.610</td>
+      <td style="font-weight:700;color:#1F3A10">61.975</td>
     </tr>
   
     <tr>
       <td>2026-04-20</td>
-      <td style="color:#a78bfa">43.014</td>
-      <td style="color:#22d3ee">20.269</td>
-      <td style="color:#fbbf24">17.521</td>
-      <td style="font-weight:700;color:#10b981">80.804</td>
+      <td style="color:#6B4E96">43.014</td>
+      <td style="color:#1F7A6E">20.269</td>
+      <td style="color:#C05621">17.521</td>
+      <td style="font-weight:700;color:#2D5016">80.804</td>
     </tr>
   
     <tr>
       <td>2026-04-19</td>
-      <td style="color:#a78bfa">8.049</td>
-      <td style="color:#22d3ee">5.907</td>
-      <td style="color:#fbbf24">335</td>
-      <td style="font-weight:700;color:#e2e8f0">14.291</td>
+      <td style="color:#6B4E96">8.049</td>
+      <td style="color:#1F7A6E">5.907</td>
+      <td style="color:#C05621">335</td>
+      <td style="font-weight:700;color:#1F3A10">14.291</td>
     </tr>
   
     <tr>
       <td>2026-04-18</td>
-      <td style="color:#a78bfa">34.288</td>
-      <td style="color:#22d3ee">14.606</td>
-      <td style="color:#fbbf24">14.933</td>
-      <td style="font-weight:700;color:#e2e8f0">63.827</td>
+      <td style="color:#6B4E96">34.288</td>
+      <td style="color:#1F7A6E">14.606</td>
+      <td style="color:#C05621">14.933</td>
+      <td style="font-weight:700;color:#1F3A10">63.827</td>
     </tr>
   
     <tr>
       <td>2026-04-17</td>
-      <td style="color:#a78bfa">43.955</td>
-      <td style="color:#22d3ee">18.129</td>
-      <td style="color:#fbbf24">12.459</td>
-      <td style="font-weight:700;color:#e2e8f0">74.543</td>
+      <td style="color:#6B4E96">43.955</td>
+      <td style="color:#1F7A6E">18.129</td>
+      <td style="color:#C05621">12.459</td>
+      <td style="font-weight:700;color:#1F3A10">74.543</td>
     </tr>
   
     <tr>
       <td>2026-04-16</td>
-      <td style="color:#a78bfa">390.675</td>
-      <td style="color:#22d3ee">30.077</td>
-      <td style="color:#fbbf24">11.170</td>
-      <td style="font-weight:700;color:#10b981">431.922</td>
+      <td style="color:#6B4E96">390.675</td>
+      <td style="color:#1F7A6E">30.077</td>
+      <td style="color:#C05621">11.170</td>
+      <td style="font-weight:700;color:#2D5016">431.922</td>
     </tr>
   
     <tr>
       <td>2026-04-15</td>
-      <td style="color:#a78bfa">136.128</td>
-      <td style="color:#22d3ee">20.668</td>
-      <td style="color:#fbbf24">12.868</td>
-      <td style="font-weight:700;color:#10b981">169.664</td>
+      <td style="color:#6B4E96">136.128</td>
+      <td style="color:#1F7A6E">20.668</td>
+      <td style="color:#C05621">12.868</td>
+      <td style="font-weight:700;color:#2D5016">169.664</td>
     </tr>
   
     <tr>
       <td>2026-04-14</td>
-      <td style="color:#a78bfa">61.487</td>
-      <td style="color:#22d3ee">22.510</td>
-      <td style="color:#fbbf24">16.384</td>
-      <td style="font-weight:700;color:#10b981">100.381</td>
+      <td style="color:#6B4E96">61.487</td>
+      <td style="color:#1F7A6E">22.510</td>
+      <td style="color:#C05621">16.384</td>
+      <td style="font-weight:700;color:#2D5016">100.381</td>
     </tr>
   
     <tr>
       <td>2026-04-13</td>
-      <td style="color:#a78bfa">51.009</td>
-      <td style="color:#22d3ee">16.567</td>
-      <td style="color:#fbbf24">19.649</td>
-      <td style="font-weight:700;color:#10b981">87.225</td>
+      <td style="color:#6B4E96">51.009</td>
+      <td style="color:#1F7A6E">16.567</td>
+      <td style="color:#C05621">19.649</td>
+      <td style="font-weight:700;color:#2D5016">87.225</td>
     </tr>
   
     <tr>
       <td>2026-04-12</td>
-      <td style="color:#a78bfa">9.527</td>
-      <td style="color:#22d3ee">6.338</td>
-      <td style="color:#fbbf24">984</td>
-      <td style="font-weight:700;color:#e2e8f0">16.849</td>
+      <td style="color:#6B4E96">9.527</td>
+      <td style="color:#1F7A6E">6.338</td>
+      <td style="color:#C05621">984</td>
+      <td style="font-weight:700;color:#1F3A10">16.849</td>
     </tr>
   
     <tr>
       <td>2026-04-11</td>
-      <td style="color:#a78bfa">33.649</td>
-      <td style="color:#22d3ee">10.590</td>
-      <td style="color:#fbbf24">12.951</td>
-      <td style="font-weight:700;color:#e2e8f0">57.190</td>
+      <td style="color:#6B4E96">33.649</td>
+      <td style="color:#1F7A6E">10.590</td>
+      <td style="color:#C05621">12.951</td>
+      <td style="font-weight:700;color:#1F3A10">57.190</td>
     </tr>
   
     <tr>
       <td>2026-04-10</td>
-      <td style="color:#a78bfa">53.834</td>
-      <td style="color:#22d3ee">20.129</td>
-      <td style="color:#fbbf24">14.836</td>
-      <td style="font-weight:700;color:#10b981">88.799</td>
+      <td style="color:#6B4E96">53.834</td>
+      <td style="color:#1F7A6E">20.129</td>
+      <td style="color:#C05621">14.836</td>
+      <td style="font-weight:700;color:#2D5016">88.799</td>
     </tr>
   
     <tr>
       <td>2026-04-09</td>
-      <td style="color:#a78bfa">47.614</td>
-      <td style="color:#22d3ee">22.669</td>
-      <td style="color:#fbbf24">10.364</td>
-      <td style="font-weight:700;color:#e2e8f0">80.647</td>
+      <td style="color:#6B4E96">47.614</td>
+      <td style="color:#1F7A6E">22.669</td>
+      <td style="color:#C05621">10.364</td>
+      <td style="font-weight:700;color:#1F3A10">80.647</td>
     </tr>
   
     <tr>
       <td>2026-04-08</td>
-      <td style="color:#a78bfa">44.286</td>
-      <td style="color:#22d3ee">19.851</td>
-      <td style="color:#fbbf24">12.949</td>
-      <td style="font-weight:700;color:#e2e8f0">77.086</td>
+      <td style="color:#6B4E96">44.286</td>
+      <td style="color:#1F7A6E">19.851</td>
+      <td style="color:#C05621">12.949</td>
+      <td style="font-weight:700;color:#1F3A10">77.086</td>
     </tr>
   
     <tr>
       <td>2026-04-07</td>
-      <td style="color:#a78bfa">52.423</td>
-      <td style="color:#22d3ee">21.629</td>
-      <td style="color:#fbbf24">13.930</td>
-      <td style="font-weight:700;color:#10b981">87.982</td>
+      <td style="color:#6B4E96">52.423</td>
+      <td style="color:#1F7A6E">21.629</td>
+      <td style="color:#C05621">13.930</td>
+      <td style="font-weight:700;color:#2D5016">87.982</td>
     </tr>
   
     <tr>
       <td>2026-04-06</td>
-      <td style="color:#a78bfa">68.737</td>
-      <td style="color:#22d3ee">18.323</td>
-      <td style="color:#fbbf24">21.062</td>
-      <td style="font-weight:700;color:#10b981">108.122</td>
+      <td style="color:#6B4E96">68.737</td>
+      <td style="color:#1F7A6E">18.323</td>
+      <td style="color:#C05621">21.062</td>
+      <td style="font-weight:700;color:#2D5016">108.122</td>
     </tr>
   
     <tr>
       <td>2026-04-05</td>
-      <td style="color:#a78bfa">7.652</td>
-      <td style="color:#22d3ee">6.951</td>
-      <td style="color:#fbbf24">517</td>
-      <td style="font-weight:700;color:#e2e8f0">15.120</td>
+      <td style="color:#6B4E96">7.652</td>
+      <td style="color:#1F7A6E">6.951</td>
+      <td style="color:#C05621">517</td>
+      <td style="font-weight:700;color:#1F3A10">15.120</td>
     </tr>
   
     <tr>
       <td>2026-04-04</td>
-      <td style="color:#a78bfa">41.709</td>
-      <td style="color:#22d3ee">16.245</td>
-      <td style="color:#fbbf24">14.379</td>
-      <td style="font-weight:700;color:#e2e8f0">72.333</td>
+      <td style="color:#6B4E96">41.709</td>
+      <td style="color:#1F7A6E">16.245</td>
+      <td style="color:#C05621">14.379</td>
+      <td style="font-weight:700;color:#1F3A10">72.333</td>
     </tr>
   
     <tr>
       <td>2026-04-03</td>
-      <td style="color:#a78bfa">27.604</td>
-      <td style="color:#22d3ee">10.066</td>
-      <td style="color:#fbbf24">12.196</td>
-      <td style="font-weight:700;color:#e2e8f0">49.866</td>
+      <td style="color:#6B4E96">27.604</td>
+      <td style="color:#1F7A6E">10.066</td>
+      <td style="color:#C05621">12.196</td>
+      <td style="font-weight:700;color:#1F3A10">49.866</td>
     </tr>
   
     <tr>
       <td>2026-04-02</td>
-      <td style="color:#a78bfa">76.596</td>
-      <td style="color:#22d3ee">30.282</td>
-      <td style="color:#fbbf24">17.369</td>
-      <td style="font-weight:700;color:#10b981">124.247</td>
+      <td style="color:#6B4E96">76.596</td>
+      <td style="color:#1F7A6E">30.282</td>
+      <td style="color:#C05621">17.369</td>
+      <td style="font-weight:700;color:#2D5016">124.247</td>
     </tr>
   
     <tr>
       <td>2026-04-01</td>
-      <td style="color:#a78bfa">38.877</td>
-      <td style="color:#22d3ee">25.565</td>
-      <td style="color:#fbbf24">13.683</td>
-      <td style="font-weight:700;color:#e2e8f0">78.125</td>
+      <td style="color:#6B4E96">38.877</td>
+      <td style="color:#1F7A6E">25.565</td>
+      <td style="color:#C05621">13.683</td>
+      <td style="font-weight:700;color:#1F3A10">78.125</td>
     </tr>
   
     <tr>
       <td>2026-03-31</td>
-      <td style="color:#a78bfa">66.318</td>
-      <td style="color:#22d3ee">21.891</td>
-      <td style="color:#fbbf24">16.135</td>
-      <td style="font-weight:700;color:#10b981">104.344</td>
+      <td style="color:#6B4E96">66.318</td>
+      <td style="color:#1F7A6E">21.891</td>
+      <td style="color:#C05621">16.135</td>
+      <td style="font-weight:700;color:#2D5016">104.344</td>
     </tr>
   
     <tr>
       <td>2026-03-30</td>
-      <td style="color:#a78bfa">57.358</td>
-      <td style="color:#22d3ee">23.872</td>
-      <td style="color:#fbbf24">20.822</td>
-      <td style="font-weight:700;color:#10b981">102.052</td>
+      <td style="color:#6B4E96">57.358</td>
+      <td style="color:#1F7A6E">23.872</td>
+      <td style="color:#C05621">20.822</td>
+      <td style="font-weight:700;color:#2D5016">102.052</td>
     </tr>
   
     <tr>
       <td>2026-03-29</td>
-      <td style="color:#a78bfa">11.394</td>
-      <td style="color:#22d3ee">8.594</td>
-      <td style="color:#fbbf24">532</td>
-      <td style="font-weight:700;color:#e2e8f0">20.520</td>
+      <td style="color:#6B4E96">11.394</td>
+      <td style="color:#1F7A6E">8.594</td>
+      <td style="color:#C05621">532</td>
+      <td style="font-weight:700;color:#1F3A10">20.520</td>
     </tr>
   
     <tr>
       <td>2026-03-28</td>
-      <td style="color:#a78bfa">30.583</td>
-      <td style="color:#22d3ee">8.801</td>
-      <td style="color:#fbbf24">11.340</td>
-      <td style="font-weight:700;color:#e2e8f0">50.724</td>
+      <td style="color:#6B4E96">30.583</td>
+      <td style="color:#1F7A6E">8.801</td>
+      <td style="color:#C05621">11.340</td>
+      <td style="font-weight:700;color:#1F3A10">50.724</td>
     </tr>
   
     <tr>
       <td>2026-03-27</td>
-      <td style="color:#a78bfa">51.696</td>
-      <td style="color:#22d3ee">19.315</td>
-      <td style="color:#fbbf24">13.435</td>
-      <td style="font-weight:700;color:#10b981">84.446</td>
+      <td style="color:#6B4E96">51.696</td>
+      <td style="color:#1F7A6E">19.315</td>
+      <td style="color:#C05621">13.435</td>
+      <td style="font-weight:700;color:#2D5016">84.446</td>
     </tr>
   
     <tr>
       <td>2026-03-26</td>
-      <td style="color:#a78bfa">56.747</td>
-      <td style="color:#22d3ee">24.104</td>
-      <td style="color:#fbbf24">12.579</td>
-      <td style="font-weight:700;color:#10b981">93.430</td>
+      <td style="color:#6B4E96">56.747</td>
+      <td style="color:#1F7A6E">24.104</td>
+      <td style="color:#C05621">12.579</td>
+      <td style="font-weight:700;color:#2D5016">93.430</td>
     </tr>
   
     <tr>
       <td>2026-03-25</td>
-      <td style="color:#a78bfa">43.320</td>
-      <td style="color:#22d3ee">18.981</td>
-      <td style="color:#fbbf24">12.187</td>
-      <td style="font-weight:700;color:#e2e8f0">74.488</td>
+      <td style="color:#6B4E96">43.320</td>
+      <td style="color:#1F7A6E">18.981</td>
+      <td style="color:#C05621">12.187</td>
+      <td style="font-weight:700;color:#1F3A10">74.488</td>
     </tr>
   
     <tr>
       <td>2026-03-24</td>
-      <td style="color:#a78bfa">55.002</td>
-      <td style="color:#22d3ee">19.651</td>
-      <td style="color:#fbbf24">13.661</td>
-      <td style="font-weight:700;color:#10b981">88.314</td>
+      <td style="color:#6B4E96">55.002</td>
+      <td style="color:#1F7A6E">19.651</td>
+      <td style="color:#C05621">13.661</td>
+      <td style="font-weight:700;color:#2D5016">88.314</td>
     </tr>
   
     <tr>
       <td>2026-03-23</td>
-      <td style="color:#a78bfa">51.444</td>
-      <td style="color:#22d3ee">20.965</td>
-      <td style="color:#fbbf24">21.749</td>
-      <td style="font-weight:700;color:#10b981">94.158</td>
+      <td style="color:#6B4E96">51.444</td>
+      <td style="color:#1F7A6E">20.965</td>
+      <td style="color:#C05621">21.749</td>
+      <td style="font-weight:700;color:#2D5016">94.158</td>
     </tr>
   
     <tr>
       <td>2026-03-22</td>
-      <td style="color:#a78bfa">14.923</td>
-      <td style="color:#22d3ee">6.223</td>
-      <td style="color:#fbbf24">727</td>
-      <td style="font-weight:700;color:#e2e8f0">21.873</td>
+      <td style="color:#6B4E96">14.923</td>
+      <td style="color:#1F7A6E">6.223</td>
+      <td style="color:#C05621">727</td>
+      <td style="font-weight:700;color:#1F3A10">21.873</td>
     </tr>
   
     <tr>
       <td>2026-03-21</td>
-      <td style="color:#a78bfa">39.063</td>
-      <td style="color:#22d3ee">12.696</td>
-      <td style="color:#fbbf24">14.787</td>
-      <td style="font-weight:700;color:#e2e8f0">66.546</td>
+      <td style="color:#6B4E96">39.063</td>
+      <td style="color:#1F7A6E">12.696</td>
+      <td style="color:#C05621">14.787</td>
+      <td style="font-weight:700;color:#1F3A10">66.546</td>
     </tr>
   
     <tr>
       <td>2026-03-20</td>
-      <td style="color:#a78bfa">50.387</td>
-      <td style="color:#22d3ee">21.737</td>
-      <td style="color:#fbbf24">14.714</td>
-      <td style="font-weight:700;color:#10b981">86.838</td>
+      <td style="color:#6B4E96">50.387</td>
+      <td style="color:#1F7A6E">21.737</td>
+      <td style="color:#C05621">14.714</td>
+      <td style="font-weight:700;color:#2D5016">86.838</td>
     </tr>
   
     <tr>
       <td>2026-03-19</td>
-      <td style="color:#a78bfa">57.903</td>
-      <td style="color:#22d3ee">21.258</td>
-      <td style="color:#fbbf24">13.552</td>
-      <td style="font-weight:700;color:#10b981">92.713</td>
+      <td style="color:#6B4E96">57.903</td>
+      <td style="color:#1F7A6E">21.258</td>
+      <td style="color:#C05621">13.552</td>
+      <td style="font-weight:700;color:#2D5016">92.713</td>
     </tr>
   
     <tr>
       <td>2026-03-18</td>
-      <td style="color:#a78bfa">38.381</td>
-      <td style="color:#22d3ee">22.212</td>
-      <td style="color:#fbbf24">13.345</td>
-      <td style="font-weight:700;color:#e2e8f0">73.938</td>
+      <td style="color:#6B4E96">38.381</td>
+      <td style="color:#1F7A6E">22.212</td>
+      <td style="color:#C05621">13.345</td>
+      <td style="font-weight:700;color:#1F3A10">73.938</td>
     </tr>
   
     <tr>
       <td>2026-03-17</td>
-      <td style="color:#a78bfa">57.524</td>
-      <td style="color:#22d3ee">15.405</td>
-      <td style="color:#fbbf24">17.367</td>
-      <td style="font-weight:700;color:#10b981">90.296</td>
+      <td style="color:#6B4E96">57.524</td>
+      <td style="color:#1F7A6E">15.405</td>
+      <td style="color:#C05621">17.367</td>
+      <td style="font-weight:700;color:#2D5016">90.296</td>
     </tr>
   
     <tr>
       <td>2026-03-16</td>
-      <td style="color:#a78bfa">54.159</td>
-      <td style="color:#22d3ee">21.864</td>
-      <td style="color:#fbbf24">21.677</td>
-      <td style="font-weight:700;color:#10b981">97.700</td>
+      <td style="color:#6B4E96">54.159</td>
+      <td style="color:#1F7A6E">21.864</td>
+      <td style="color:#C05621">21.677</td>
+      <td style="font-weight:700;color:#2D5016">97.700</td>
     </tr>
   
     <tr>
       <td>2026-03-15</td>
-      <td style="color:#a78bfa">8.752</td>
-      <td style="color:#22d3ee">7.133</td>
-      <td style="color:#fbbf24">171</td>
-      <td style="font-weight:700;color:#e2e8f0">16.056</td>
+      <td style="color:#6B4E96">8.752</td>
+      <td style="color:#1F7A6E">7.133</td>
+      <td style="color:#C05621">171</td>
+      <td style="font-weight:700;color:#1F3A10">16.056</td>
     </tr>
   
     <tr>
       <td>2026-03-14</td>
-      <td style="color:#a78bfa">40.330</td>
-      <td style="color:#22d3ee">14.246</td>
-      <td style="color:#fbbf24">15.711</td>
-      <td style="font-weight:700;color:#e2e8f0">70.287</td>
+      <td style="color:#6B4E96">40.330</td>
+      <td style="color:#1F7A6E">14.246</td>
+      <td style="color:#C05621">15.711</td>
+      <td style="font-weight:700;color:#1F3A10">70.287</td>
     </tr>
   
     <tr>
       <td>2026-03-13</td>
-      <td style="color:#a78bfa">40.351</td>
-      <td style="color:#22d3ee">16.950</td>
-      <td style="color:#fbbf24">11.713</td>
-      <td style="font-weight:700;color:#e2e8f0">69.014</td>
+      <td style="color:#6B4E96">40.351</td>
+      <td style="color:#1F7A6E">16.950</td>
+      <td style="color:#C05621">11.713</td>
+      <td style="font-weight:700;color:#1F3A10">69.014</td>
     </tr>
   
     <tr>
       <td>2026-03-12</td>
-      <td style="color:#a78bfa">54.278</td>
-      <td style="color:#22d3ee">20.686</td>
-      <td style="color:#fbbf24">12.303</td>
-      <td style="font-weight:700;color:#10b981">87.267</td>
+      <td style="color:#6B4E96">54.278</td>
+      <td style="color:#1F7A6E">20.686</td>
+      <td style="color:#C05621">12.303</td>
+      <td style="font-weight:700;color:#2D5016">87.267</td>
     </tr>
   
     <tr>
       <td>2026-03-11</td>
-      <td style="color:#a78bfa">41.572</td>
-      <td style="color:#22d3ee">15.584</td>
-      <td style="color:#fbbf24">13.277</td>
-      <td style="font-weight:700;color:#e2e8f0">70.433</td>
+      <td style="color:#6B4E96">41.572</td>
+      <td style="color:#1F7A6E">15.584</td>
+      <td style="color:#C05621">13.277</td>
+      <td style="font-weight:700;color:#1F3A10">70.433</td>
     </tr>
   
     <tr>
       <td>2026-03-10</td>
-      <td style="color:#a78bfa">80.823</td>
-      <td style="color:#22d3ee">25.699</td>
-      <td style="color:#fbbf24">15.860</td>
-      <td style="font-weight:700;color:#10b981">122.382</td>
+      <td style="color:#6B4E96">80.823</td>
+      <td style="color:#1F7A6E">25.699</td>
+      <td style="color:#C05621">15.860</td>
+      <td style="font-weight:700;color:#2D5016">122.382</td>
     </tr>
   
     <tr>
       <td>2026-03-09</td>
-      <td style="color:#a78bfa">43.785</td>
-      <td style="color:#22d3ee">22.833</td>
-      <td style="color:#fbbf24">22.868</td>
-      <td style="font-weight:700;color:#10b981">89.486</td>
+      <td style="color:#6B4E96">43.785</td>
+      <td style="color:#1F7A6E">22.833</td>
+      <td style="color:#C05621">22.868</td>
+      <td style="font-weight:700;color:#2D5016">89.486</td>
     </tr>
   
     <tr>
       <td>2026-03-08</td>
-      <td style="color:#a78bfa">13.054</td>
-      <td style="color:#22d3ee">8.697</td>
-      <td style="color:#fbbf24">239</td>
-      <td style="font-weight:700;color:#e2e8f0">21.990</td>
+      <td style="color:#6B4E96">13.054</td>
+      <td style="color:#1F7A6E">8.697</td>
+      <td style="color:#C05621">239</td>
+      <td style="font-weight:700;color:#1F3A10">21.990</td>
     </tr>
   
     <tr>
       <td>2026-03-07</td>
-      <td style="color:#a78bfa">33.045</td>
-      <td style="color:#22d3ee">14.455</td>
-      <td style="color:#fbbf24">13.697</td>
-      <td style="font-weight:700;color:#e2e8f0">61.197</td>
+      <td style="color:#6B4E96">33.045</td>
+      <td style="color:#1F7A6E">14.455</td>
+      <td style="color:#C05621">13.697</td>
+      <td style="font-weight:700;color:#1F3A10">61.197</td>
     </tr>
   
     <tr>
       <td>2026-03-06</td>
-      <td style="color:#a78bfa">43.390</td>
-      <td style="color:#22d3ee">21.078</td>
-      <td style="color:#fbbf24">13.723</td>
-      <td style="font-weight:700;color:#e2e8f0">78.191</td>
+      <td style="color:#6B4E96">43.390</td>
+      <td style="color:#1F7A6E">21.078</td>
+      <td style="color:#C05621">13.723</td>
+      <td style="font-weight:700;color:#1F3A10">78.191</td>
     </tr>
   
     <tr>
       <td>2026-03-05</td>
-      <td style="color:#a78bfa">50.696</td>
-      <td style="color:#22d3ee">21.998</td>
-      <td style="color:#fbbf24">14.480</td>
-      <td style="font-weight:700;color:#10b981">87.174</td>
+      <td style="color:#6B4E96">50.696</td>
+      <td style="color:#1F7A6E">21.998</td>
+      <td style="color:#C05621">14.480</td>
+      <td style="font-weight:700;color:#2D5016">87.174</td>
     </tr>
   </tbody>
         </table>
@@ -1552,7 +1557,7 @@
     <div class="rank-row">
       <div class="rank-name" title="FERNANDO AUGUSTO FURLAM_PR">1. FERNANDO AUGUSTO FURLAM_PR</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1560,7 +1565,7 @@
     <div class="rank-row">
       <div class="rank-name" title="OLISMAR VALDIVINO_PR">2. OLISMAR VALDIVINO_PR</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1568,7 +1573,7 @@
     <div class="rank-row">
       <div class="rank-name" title="MORANGOS FAMILIA F LTDA">3. MORANGOS FAMILIA F LTDA</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1576,7 +1581,7 @@
     <div class="rank-row">
       <div class="rank-name" title="GRUPO BELEBAS LTDA">4. GRUPO BELEBAS LTDA</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1584,7 +1589,7 @@
     <div class="rank-row">
       <div class="rank-name" title="ORLANDO RAMOS _PR">5. ORLANDO RAMOS _PR</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1592,7 +1597,7 @@
     <div class="rank-row">
       <div class="rank-name" title="DISTRIBUIDORA DE FRUTAS ROCHA LTDA EPP">6. DISTRIBUIDORA DE FRUTAS ROCHA LTDA EPP</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1600,7 +1605,7 @@
     <div class="rank-row">
       <div class="rank-name" title="D FRASSON MINAS LTDA EPP">7. D FRASSON MINAS LTDA EPP</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1608,7 +1613,7 @@
     <div class="rank-row">
       <div class="rank-name" title="DANILO ALVES DOS SANTOS _PR">8. DANILO ALVES DOS SANTOS _PR</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1616,7 +1621,7 @@
     <div class="rank-row">
       <div class="rank-name" title="ELIVELTON SABINO SCUSSEL_PR">9. ELIVELTON SABINO SCUSSEL_PR</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1624,7 +1629,7 @@
     <div class="rank-row">
       <div class="rank-name" title="JULIANA FERRI VERDIN E OUTRO_PR">10. JULIANA FERRI VERDIN E OUTRO_PR</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:100%;background:#ef4444"></div>
+        <div class="rank-bar" style="width:100%;background:#D64545"></div>
       </div>
       <div class="rank-val">97d</div>
     </div>
@@ -1656,7 +1661,7 @@
     <div class="cd-tip">📍 97_Oba CD · 100-CD-DF</div>
   </div></td>
       <td>2026-06-02</td>
-      <td style="color:#10b981;font-weight:700">1d</td>
+      <td style="color:#2D5016;font-weight:700">1d</td>
       <td>2.599</td>
       <td><span class="badge ok">OK</span></td>
     </tr>
@@ -1668,7 +1673,7 @@
     <div class="cd-tip">📍 97_Oba CD · 125-ETP SMA</div>
   </div></td>
       <td>2026-06-02</td>
-      <td style="color:#10b981;font-weight:700">1d</td>
+      <td style="color:#2D5016;font-weight:700">1d</td>
       <td>42.847</td>
       <td><span class="badge ok">OK</span></td>
     </tr>
@@ -1680,7 +1685,7 @@
     <div class="cd-tip">📍 97_Oba CD · 100-CD-DF</div>
   </div></td>
       <td>2026-05-28</td>
-      <td style="color:#10b981;font-weight:700">6d</td>
+      <td style="color:#2D5016;font-weight:700">6d</td>
       <td>38.740</td>
       <td><span class="badge ok">OK</span></td>
     </tr>
@@ -1692,7 +1697,7 @@
     <div class="cd-tip">📍 97_Oba CD · 125-ETP SMA</div>
   </div></td>
       <td>2026-05-08</td>
-      <td style="color:#ef4444;font-weight:700">26d</td>
+      <td style="color:#D64545;font-weight:700">26d</td>
       <td>2.144</td>
       <td><span class="badge crit">CRÍTICO</span></td>
     </tr>
@@ -1704,7 +1709,7 @@
     <div class="cd-tip">📍 97_Oba CD · 100-CD-DF</div>
   </div></td>
       <td>2026-05-18</td>
-      <td style="color:#f59e0b;font-weight:700">16d</td>
+      <td style="color:#C05621;font-weight:700">16d</td>
       <td>3.750</td>
       <td><span class="badge warn">ATENÇÃO</span></td>
     </tr>
@@ -1716,7 +1721,7 @@
     <div class="cd-tip">📍 97_Oba CD · 100-CD-DF</div>
   </div></td>
       <td>2026-05-30</td>
-      <td style="color:#10b981;font-weight:700">4d</td>
+      <td style="color:#2D5016;font-weight:700">4d</td>
       <td>5.750</td>
       <td><span class="badge ok">OK</span></td>
     </tr>
@@ -1728,7 +1733,7 @@
     <div class="cd-tip">📍 97_Oba CD · 100-CD-DF</div>
   </div></td>
       <td>2026-06-02</td>
-      <td style="color:#10b981;font-weight:700">1d</td>
+      <td style="color:#2D5016;font-weight:700">1d</td>
       <td>7.133</td>
       <td><span class="badge ok">OK</span></td>
     </tr>
@@ -1740,7 +1745,7 @@
     <div class="cd-tip">📍 97_Oba CD · 100-CD-DF</div>
   </div></td>
       <td>2026-06-01</td>
-      <td style="color:#10b981;font-weight:700">2d</td>
+      <td style="color:#2D5016;font-weight:700">2d</td>
       <td>2.468</td>
       <td><span class="badge ok">OK</span></td>
     </tr>
@@ -1752,7 +1757,7 @@
     <div class="cd-tip">📍 97_Oba CD · 125-ETP SMA</div>
   </div></td>
       <td>2026-05-19</td>
-      <td style="color:#f59e0b;font-weight:700">15d</td>
+      <td style="color:#C05621;font-weight:700">15d</td>
       <td>484</td>
       <td><span class="badge warn">ATENÇÃO</span></td>
     </tr>
@@ -1764,7 +1769,7 @@
     <div class="cd-tip">📍 97_Oba CD · 125-ETP SMA</div>
   </div></td>
       <td>2026-06-02</td>
-      <td style="color:#10b981;font-weight:700">1d</td>
+      <td style="color:#2D5016;font-weight:700">1d</td>
       <td>54.973</td>
       <td><span class="badge ok">OK</span></td>
     </tr>
@@ -1802,7 +1807,7 @@
       <td style="color:var(--muted)">1</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="HORTIFRUTI SOLAR">HORTIFRUTI SOLAR</td>
       <td>2026-06-03</td>
-      <td style="font-weight:700;color:#10b981">0d</td>
+      <td style="font-weight:700;color:#2D5016">0d</td>
       <td>25.737</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1812,7 +1817,7 @@
       <td style="color:var(--muted)">2</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="THIAGO PARENTE">THIAGO PARENTE</td>
       <td>2026-06-03</td>
-      <td style="font-weight:700;color:#10b981">0d</td>
+      <td style="font-weight:700;color:#2D5016">0d</td>
       <td>15</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1822,7 +1827,7 @@
       <td style="color:var(--muted)">3</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="WAGNER ROBERTO FANTI">WAGNER ROBERTO FANTI</td>
       <td>2026-06-02</td>
-      <td style="font-weight:700;color:#10b981">1d</td>
+      <td style="font-weight:700;color:#2D5016">1d</td>
       <td>50.057</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1832,7 +1837,7 @@
       <td style="color:var(--muted)">4</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="COMERCIO DE FRUTAS">COMERCIO DE FRUTAS</td>
       <td>2026-06-02</td>
-      <td style="font-weight:700;color:#10b981">1d</td>
+      <td style="font-weight:700;color:#2D5016">1d</td>
       <td>46.289</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1842,7 +1847,7 @@
       <td style="color:var(--muted)">5</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="EMILIO ANTONIO CARADORI _PR">EMILIO ANTONIO CARADORI _PR</td>
       <td>2026-06-02</td>
-      <td style="font-weight:700;color:#10b981">1d</td>
+      <td style="font-weight:700;color:#2D5016">1d</td>
       <td>43.861</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1852,7 +1857,7 @@
       <td style="color:var(--muted)">6</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ADRIANO BATISTA DE OLIVEIRA E">ADRIANO BATISTA DE OLIVEIRA E</td>
       <td>2026-06-02</td>
-      <td style="font-weight:700;color:#10b981">1d</td>
+      <td style="font-weight:700;color:#2D5016">1d</td>
       <td>42.847</td>
       <td><div class="cd-tooltip">
     <span class="multi-cd-badge" style="cursor:help">🔀 2 CDs</span>
@@ -1865,7 +1870,7 @@
       <td style="color:var(--muted)">7</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="SCHMIDT CACAU">SCHMIDT CACAU</td>
       <td>2026-06-01</td>
-      <td style="font-weight:700;color:#10b981">2d</td>
+      <td style="font-weight:700;color:#2D5016">2d</td>
       <td>148.732</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1875,7 +1880,7 @@
       <td style="color:var(--muted)">8</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ARCANJO DOMINGOS ZAGO_PR">ARCANJO DOMINGOS ZAGO_PR</td>
       <td>2026-05-28</td>
-      <td style="font-weight:700;color:#10b981">6d</td>
+      <td style="font-weight:700;color:#2D5016">6d</td>
       <td>38.740</td>
       <td><div class="cd-tooltip">
     <span class="multi-cd-badge" style="cursor:help">🔀 2 CDs</span>
@@ -1888,7 +1893,7 @@
       <td style="color:var(--muted)">9</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="BANANAS BANDEIRANTES">BANANAS BANDEIRANTES</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>440</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1898,7 +1903,7 @@
       <td style="color:var(--muted)">10</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="RUIZ HORTIFRUTI COMERCIALIZAÇÃ">RUIZ HORTIFRUTI COMERCIALIZAÇÃ</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>2.848</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1908,7 +1913,7 @@
       <td style="color:var(--muted)">11</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="WELLIGNTON KATO_PR">WELLIGNTON KATO_PR</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>57</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1918,7 +1923,7 @@
       <td style="color:var(--muted)">12</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CENTRO DE ABAST FUGITA LDTA">CENTRO DE ABAST FUGITA LDTA</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>300</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1928,7 +1933,7 @@
       <td style="color:var(--muted)">13</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="BRASNICA FRUTAS TROPICAIS00114">BRASNICA FRUTAS TROPICAIS00114</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>1.100</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1938,7 +1943,7 @@
       <td style="color:var(--muted)">14</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="O ABACATEIRO">O ABACATEIRO</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>1.310</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1948,7 +1953,7 @@
       <td style="color:var(--muted)">15</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="DAGMAR MARIA DE O KRUGER_PR">DAGMAR MARIA DE O KRUGER_PR</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>168</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1958,7 +1963,7 @@
       <td style="color:var(--muted)">16</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="GOLD CITRUS COMERCIO ATACADISTA DE FRUTAS LTDA">GOLD CITRUS COMERCIO ATACADISTA DE FRUTAS LTDA</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>12.020</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1968,7 +1973,7 @@
       <td style="color:var(--muted)">17</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="EDSON TAKESHI MATSUSAKO">EDSON TAKESHI MATSUSAKO</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>44.114</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1978,7 +1983,7 @@
       <td style="color:var(--muted)">18</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="BANANAS SG LTDA">BANANAS SG LTDA</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>4.200</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1988,7 +1993,7 @@
       <td style="color:var(--muted)">19</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="SOLO VIVO">SOLO VIVO</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>7.341</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -1998,7 +2003,7 @@
       <td style="color:var(--muted)">20</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CAMBARA ORGANICOS">CAMBARA ORGANICOS</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>4.884</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -2008,7 +2013,7 @@
       <td style="color:var(--muted)">21</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="EDSON TAKESHI MATSUSAKO">EDSON TAKESHI MATSUSAKO</td>
       <td>2026-05-27</td>
-      <td style="font-weight:700;color:#10b981">7d</td>
+      <td style="font-weight:700;color:#2D5016">7d</td>
       <td>44.114</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge ok">OK</span></td>
@@ -2018,7 +2023,7 @@
       <td style="color:var(--muted)">22</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="COMERCIAL DE ALIMENTOS 3RR">COMERCIAL DE ALIMENTOS 3RR</td>
       <td>2026-05-26</td>
-      <td style="font-weight:700;color:#f59e0b">8d</td>
+      <td style="font-weight:700;color:#C05621">8d</td>
       <td>165</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2028,7 +2033,7 @@
       <td style="color:var(--muted)">23</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="AURELIO FERREIRA LEITE_PR">AURELIO FERREIRA LEITE_PR</td>
       <td>2026-05-26</td>
-      <td style="font-weight:700;color:#f59e0b">8d</td>
+      <td style="font-weight:700;color:#C05621">8d</td>
       <td>6.491</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2038,7 +2043,7 @@
       <td style="color:var(--muted)">24</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="MANASSES BORGES DE MORAIS ME">MANASSES BORGES DE MORAIS ME</td>
       <td>2026-05-26</td>
-      <td style="font-weight:700;color:#f59e0b">8d</td>
+      <td style="font-weight:700;color:#C05621">8d</td>
       <td>130</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2048,7 +2053,7 @@
       <td style="color:var(--muted)">25</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ROMUALDO JOSE GATTO">ROMUALDO JOSE GATTO</td>
       <td>2026-05-26</td>
-      <td style="font-weight:700;color:#f59e0b">8d</td>
+      <td style="font-weight:700;color:#C05621">8d</td>
       <td>1.290</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2058,7 +2063,7 @@
       <td style="color:var(--muted)">26</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="PORTELA FRUTAS">PORTELA FRUTAS</td>
       <td>2026-05-26</td>
-      <td style="font-weight:700;color:#f59e0b">8d</td>
+      <td style="font-weight:700;color:#C05621">8d</td>
       <td>770</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2068,7 +2073,7 @@
       <td style="color:var(--muted)">27</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="VALDOMIRO ALVES DOS SANTOS_PR">VALDOMIRO ALVES DOS SANTOS_PR</td>
       <td>2026-05-26</td>
-      <td style="font-weight:700;color:#f59e0b">8d</td>
+      <td style="font-weight:700;color:#C05621">8d</td>
       <td>766</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2078,7 +2083,7 @@
       <td style="color:var(--muted)">28</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="RODOLFO CITADINI TAVARES E OUT">RODOLFO CITADINI TAVARES E OUT</td>
       <td>2026-05-26</td>
-      <td style="font-weight:700;color:#f59e0b">8d</td>
+      <td style="font-weight:700;color:#C05621">8d</td>
       <td>80</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2088,7 +2093,7 @@
       <td style="color:var(--muted)">29</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CONSENTINE COM DE HORTIFRUTI LTDA">CONSENTINE COM DE HORTIFRUTI LTDA</td>
       <td>2026-05-26</td>
-      <td style="font-weight:700;color:#f59e0b">8d</td>
+      <td style="font-weight:700;color:#C05621">8d</td>
       <td>640</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2098,7 +2103,7 @@
       <td style="color:var(--muted)">30</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="A M APARECIDO DE PAUL HORTIFRUTI ME">A M APARECIDO DE PAUL HORTIFRUTI ME</td>
       <td>2026-05-25</td>
-      <td style="font-weight:700;color:#f59e0b">9d</td>
+      <td style="font-weight:700;color:#C05621">9d</td>
       <td>58</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2108,7 +2113,7 @@
       <td style="color:var(--muted)">31</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CARADORI AGROPECUARIA">CARADORI AGROPECUARIA</td>
       <td>2026-05-25</td>
-      <td style="font-weight:700;color:#f59e0b">9d</td>
+      <td style="font-weight:700;color:#C05621">9d</td>
       <td>2.640</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2118,7 +2123,7 @@
       <td style="color:var(--muted)">32</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="LAS PALMAS FRUTICOLA LTDA">LAS PALMAS FRUTICOLA LTDA</td>
       <td>2026-05-25</td>
-      <td style="font-weight:700;color:#f59e0b">9d</td>
+      <td style="font-weight:700;color:#C05621">9d</td>
       <td>25.983</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2128,7 +2133,7 @@
       <td style="color:var(--muted)">33</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CHACARA DAS FOLHAGENS">CHACARA DAS FOLHAGENS</td>
       <td>2026-05-24</td>
-      <td style="font-weight:700;color:#f59e0b">10d</td>
+      <td style="font-weight:700;color:#C05621">10d</td>
       <td>300</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2138,7 +2143,7 @@
       <td style="color:var(--muted)">34</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="GELSON DA LUZ SANTOS E OUTROS_PR">GELSON DA LUZ SANTOS E OUTROS_PR</td>
       <td>2026-05-23</td>
-      <td style="font-weight:700;color:#f59e0b">11d</td>
+      <td style="font-weight:700;color:#C05621">11d</td>
       <td>1.194</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2148,7 +2153,7 @@
       <td style="color:var(--muted)">35</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="RODRIGO PIQUEIRA_PR">RODRIGO PIQUEIRA_PR</td>
       <td>2026-05-23</td>
-      <td style="font-weight:700;color:#f59e0b">11d</td>
+      <td style="font-weight:700;color:#C05621">11d</td>
       <td>41</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2158,7 +2163,7 @@
       <td style="color:var(--muted)">36</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="MARK FRUTAS LTDA">MARK FRUTAS LTDA</td>
       <td>2026-05-22</td>
-      <td style="font-weight:700;color:#f59e0b">12d</td>
+      <td style="font-weight:700;color:#C05621">12d</td>
       <td>43.601</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2168,7 +2173,7 @@
       <td style="color:var(--muted)">37</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="MARIA &amp; MARCELO">MARIA &amp; MARCELO</td>
       <td>2026-05-22</td>
-      <td style="font-weight:700;color:#f59e0b">12d</td>
+      <td style="font-weight:700;color:#C05621">12d</td>
       <td>10.157</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2178,7 +2183,7 @@
       <td style="color:var(--muted)">38</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="MAURO BRISKI_PR">MAURO BRISKI_PR</td>
       <td>2026-05-22</td>
-      <td style="font-weight:700;color:#f59e0b">12d</td>
+      <td style="font-weight:700;color:#C05621">12d</td>
       <td>2.985</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2188,7 +2193,7 @@
       <td style="color:var(--muted)">39</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="LUIZ YOSHIO KUMAGAI E OUTRA _PR">LUIZ YOSHIO KUMAGAI E OUTRA _PR</td>
       <td>2026-05-22</td>
-      <td style="font-weight:700;color:#f59e0b">12d</td>
+      <td style="font-weight:700;color:#C05621">12d</td>
       <td>12.840</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2198,7 +2203,7 @@
       <td style="color:var(--muted)">40</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="MARCELO ARCANJO LUZ_PR">MARCELO ARCANJO LUZ_PR</td>
       <td>2026-05-21</td>
-      <td style="font-weight:700;color:#f59e0b">13d</td>
+      <td style="font-weight:700;color:#C05621">13d</td>
       <td>246</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2208,7 +2213,7 @@
       <td style="color:var(--muted)">41</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="GABRIEL LABRE MENDES DA SILVA_PR">GABRIEL LABRE MENDES DA SILVA_PR</td>
       <td>2026-05-21</td>
-      <td style="font-weight:700;color:#f59e0b">13d</td>
+      <td style="font-weight:700;color:#C05621">13d</td>
       <td>1.412</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2218,7 +2223,7 @@
       <td style="color:var(--muted)">42</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="AGRICULTURA RR SILVA LTDA">AGRICULTURA RR SILVA LTDA</td>
       <td>2026-05-21</td>
-      <td style="font-weight:700;color:#f59e0b">13d</td>
+      <td style="font-weight:700;color:#C05621">13d</td>
       <td>2.439</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2228,7 +2233,7 @@
       <td style="color:var(--muted)">43</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ANDRE HENRIQUE MONTAGNER_PR">ANDRE HENRIQUE MONTAGNER_PR</td>
       <td>2026-05-21</td>
-      <td style="font-weight:700;color:#f59e0b">13d</td>
+      <td style="font-weight:700;color:#C05621">13d</td>
       <td>200</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2238,7 +2243,7 @@
       <td style="color:var(--muted)">44</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="LAURO MINORU DANNO_PR">LAURO MINORU DANNO_PR</td>
       <td>2026-05-21</td>
-      <td style="font-weight:700;color:#f59e0b">13d</td>
+      <td style="font-weight:700;color:#C05621">13d</td>
       <td>1.419</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2248,7 +2253,7 @@
       <td style="color:var(--muted)">45</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="EDUARDO SEKITA E OUTROS">EDUARDO SEKITA E OUTROS</td>
       <td>2026-05-21</td>
-      <td style="font-weight:700;color:#f59e0b">13d</td>
+      <td style="font-weight:700;color:#C05621">13d</td>
       <td>1.820</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2258,7 +2263,7 @@
       <td style="color:var(--muted)">46</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="DAN AGRO COMERCIAL">DAN AGRO COMERCIAL</td>
       <td>2026-05-21</td>
-      <td style="font-weight:700;color:#f59e0b">13d</td>
+      <td style="font-weight:700;color:#C05621">13d</td>
       <td>220</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2268,7 +2273,7 @@
       <td style="color:var(--muted)">47</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ROZENDO VICENTE TEIXEIRA SITIO">ROZENDO VICENTE TEIXEIRA SITIO</td>
       <td>2026-05-21</td>
-      <td style="font-weight:700;color:#f59e0b">13d</td>
+      <td style="font-weight:700;color:#C05621">13d</td>
       <td>6</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2278,7 +2283,7 @@
       <td style="color:var(--muted)">48</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="RR PRODUCAO E COMERCIO DE FRUT">RR PRODUCAO E COMERCIO DE FRUT</td>
       <td>2026-05-20</td>
-      <td style="font-weight:700;color:#f59e0b">14d</td>
+      <td style="font-weight:700;color:#C05621">14d</td>
       <td>160</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2288,7 +2293,7 @@
       <td style="color:var(--muted)">49</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="DIJALMA PEDRO DA SILVA">DIJALMA PEDRO DA SILVA</td>
       <td>2026-05-20</td>
-      <td style="font-weight:700;color:#f59e0b">14d</td>
+      <td style="font-weight:700;color:#C05621">14d</td>
       <td>615</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2298,7 +2303,7 @@
       <td style="color:var(--muted)">50</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="NELSON RODRIGUES DE FREITAS">NELSON RODRIGUES DE FREITAS</td>
       <td>2026-05-19</td>
-      <td style="font-weight:700;color:#f59e0b">15d</td>
+      <td style="font-weight:700;color:#C05621">15d</td>
       <td>81</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2308,7 +2313,7 @@
       <td style="color:var(--muted)">51</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="SCHMIDT CACAU LTDA">SCHMIDT CACAU LTDA</td>
       <td>2026-05-19</td>
-      <td style="font-weight:700;color:#f59e0b">15d</td>
+      <td style="font-weight:700;color:#C05621">15d</td>
       <td>3.080</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2318,7 +2323,7 @@
       <td style="color:var(--muted)">52</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="HAROLDO BRUNO LACARINI E OUTRO">HAROLDO BRUNO LACARINI E OUTRO</td>
       <td>2026-05-19</td>
-      <td style="font-weight:700;color:#f59e0b">15d</td>
+      <td style="font-weight:700;color:#C05621">15d</td>
       <td>18.337</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2328,7 +2333,7 @@
       <td style="color:var(--muted)">53</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JANETE MARIA MARCHIORI_PR">JANETE MARIA MARCHIORI_PR</td>
       <td>2026-05-19</td>
-      <td style="font-weight:700;color:#f59e0b">15d</td>
+      <td style="font-weight:700;color:#C05621">15d</td>
       <td>838</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2338,7 +2343,7 @@
       <td style="color:var(--muted)">54</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="OSVALDO MOLINA PIGAIANI_PR">OSVALDO MOLINA PIGAIANI_PR</td>
       <td>2026-05-19</td>
-      <td style="font-weight:700;color:#f59e0b">15d</td>
+      <td style="font-weight:700;color:#C05621">15d</td>
       <td>544</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2348,7 +2353,7 @@
       <td style="color:var(--muted)">55</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="OSVALDO CHIGUEO IZUMIYAMA E OU">OSVALDO CHIGUEO IZUMIYAMA E OU</td>
       <td>2026-05-19</td>
-      <td style="font-weight:700;color:#f59e0b">15d</td>
+      <td style="font-weight:700;color:#C05621">15d</td>
       <td>484</td>
       <td><div class="cd-tooltip">
     <span class="multi-cd-badge" style="cursor:help">🔀 2 CDs</span>
@@ -2361,7 +2366,7 @@
       <td style="color:var(--muted)">56</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ALBERTO FERREIRA GARCIA">ALBERTO FERREIRA GARCIA</td>
       <td>2026-05-18</td>
-      <td style="font-weight:700;color:#f59e0b">16d</td>
+      <td style="font-weight:700;color:#C05621">16d</td>
       <td>100</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2371,7 +2376,7 @@
       <td style="color:var(--muted)">57</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CLN AGRICULTURA LTDA">CLN AGRICULTURA LTDA</td>
       <td>2026-05-18</td>
-      <td style="font-weight:700;color:#f59e0b">16d</td>
+      <td style="font-weight:700;color:#C05621">16d</td>
       <td>3.750</td>
       <td><div class="cd-tooltip">
     <span class="multi-cd-badge" style="cursor:help">🔀 2 CDs</span>
@@ -2384,7 +2389,7 @@
       <td style="color:var(--muted)">58</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ADELINO BALBINO">ADELINO BALBINO</td>
       <td>2026-05-18</td>
-      <td style="font-weight:700;color:#f59e0b">16d</td>
+      <td style="font-weight:700;color:#C05621">16d</td>
       <td>400</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2394,7 +2399,7 @@
       <td style="color:var(--muted)">59</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JESSICA SANTOS CARVALHO CAMARA LTDA">JESSICA SANTOS CARVALHO CAMARA LTDA</td>
       <td>2026-05-18</td>
-      <td style="font-weight:700;color:#f59e0b">16d</td>
+      <td style="font-weight:700;color:#C05621">16d</td>
       <td>80</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2404,7 +2409,7 @@
       <td style="color:var(--muted)">60</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ALBERTO FERREIRA GARCIA_PR">ALBERTO FERREIRA GARCIA_PR</td>
       <td>2026-05-18</td>
-      <td style="font-weight:700;color:#f59e0b">16d</td>
+      <td style="font-weight:700;color:#C05621">16d</td>
       <td>1.663</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2414,7 +2419,7 @@
       <td style="color:var(--muted)">61</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="AMORA NUTRE">AMORA NUTRE</td>
       <td>2026-05-17</td>
-      <td style="font-weight:700;color:#f59e0b">17d</td>
+      <td style="font-weight:700;color:#C05621">17d</td>
       <td>38</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2424,7 +2429,7 @@
       <td style="color:var(--muted)">62</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ABADIO ANTONIO MARTINS TAVARES">ABADIO ANTONIO MARTINS TAVARES</td>
       <td>2026-05-17</td>
-      <td style="font-weight:700;color:#f59e0b">17d</td>
+      <td style="font-weight:700;color:#C05621">17d</td>
       <td>40</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2434,7 +2439,7 @@
       <td style="color:var(--muted)">63</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="FELIPE DIOGO DE LIMA_PR">FELIPE DIOGO DE LIMA_PR</td>
       <td>2026-05-16</td>
-      <td style="font-weight:700;color:#f59e0b">18d</td>
+      <td style="font-weight:700;color:#C05621">18d</td>
       <td>6.036</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2444,7 +2449,7 @@
       <td style="color:var(--muted)">64</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="RIO DAS PEDRAS HORTICULTURA AGROPECUARIA LTDA">RIO DAS PEDRAS HORTICULTURA AGROPECUARIA LTDA</td>
       <td>2026-05-15</td>
-      <td style="font-weight:700;color:#f59e0b">19d</td>
+      <td style="font-weight:700;color:#C05621">19d</td>
       <td>602</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2454,7 +2459,7 @@
       <td style="color:var(--muted)">65</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="PCR IMPORTACAO E EXPORTACAO EI">PCR IMPORTACAO E EXPORTACAO EI</td>
       <td>2026-05-15</td>
-      <td style="font-weight:700;color:#f59e0b">19d</td>
+      <td style="font-weight:700;color:#C05621">19d</td>
       <td>600</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2464,7 +2469,7 @@
       <td style="color:var(--muted)">66</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JULIO MARCOS BRISOLA_PR">JULIO MARCOS BRISOLA_PR</td>
       <td>2026-05-14</td>
-      <td style="font-weight:700;color:#f59e0b">20d</td>
+      <td style="font-weight:700;color:#C05621">20d</td>
       <td>4.848</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2474,7 +2479,7 @@
       <td style="color:var(--muted)">67</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ALFREDO GAUDENCIO DE OLIVEIRA_PR">ALFREDO GAUDENCIO DE OLIVEIRA_PR</td>
       <td>2026-05-14</td>
-      <td style="font-weight:700;color:#f59e0b">20d</td>
+      <td style="font-weight:700;color:#C05621">20d</td>
       <td>361</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2484,7 +2489,7 @@
       <td style="color:var(--muted)">68</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JOSELI APARECIDA DE TOLEDO SILVA_PR">JOSELI APARECIDA DE TOLEDO SILVA_PR</td>
       <td>2026-05-14</td>
-      <td style="font-weight:700;color:#f59e0b">20d</td>
+      <td style="font-weight:700;color:#C05621">20d</td>
       <td>4.385</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2494,7 +2499,7 @@
       <td style="color:var(--muted)">69</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JR COMERCIAL DE FRUTAS">JR COMERCIAL DE FRUTAS</td>
       <td>2026-05-14</td>
-      <td style="font-weight:700;color:#f59e0b">20d</td>
+      <td style="font-weight:700;color:#C05621">20d</td>
       <td>500</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2504,7 +2509,7 @@
       <td style="color:var(--muted)">70</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="PEDRO ANTONIO BRISOLA E GLEICE_PR">PEDRO ANTONIO BRISOLA E GLEICE_PR</td>
       <td>2026-05-14</td>
-      <td style="font-weight:700;color:#f59e0b">20d</td>
+      <td style="font-weight:700;color:#C05621">20d</td>
       <td>193</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge warn">ATENÇÃO</span></td>
@@ -2514,7 +2519,7 @@
       <td style="color:var(--muted)">71</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="EVERTON JOAO DE CAMPOS E OUTRO">EVERTON JOAO DE CAMPOS E OUTRO</td>
       <td>2026-05-13</td>
-      <td style="font-weight:700;color:#ef4444">21d</td>
+      <td style="font-weight:700;color:#D64545">21d</td>
       <td>3.300</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2524,7 +2529,7 @@
       <td style="color:var(--muted)">72</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CITRICOLA LUCATO COM IMPOR E EXPOR LTDA">CITRICOLA LUCATO COM IMPOR E EXPOR LTDA</td>
       <td>2026-05-13</td>
-      <td style="font-weight:700;color:#ef4444">21d</td>
+      <td style="font-weight:700;color:#D64545">21d</td>
       <td>1.180</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2534,7 +2539,7 @@
       <td style="color:var(--muted)">73</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CHAGAS HORTIFRUTI">CHAGAS HORTIFRUTI</td>
       <td>2026-05-13</td>
-      <td style="font-weight:700;color:#ef4444">21d</td>
+      <td style="font-weight:700;color:#D64545">21d</td>
       <td>140</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2544,7 +2549,7 @@
       <td style="color:var(--muted)">74</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="HOCHIBRA COGUMELOS">HOCHIBRA COGUMELOS</td>
       <td>2026-05-12</td>
-      <td style="font-weight:700;color:#ef4444">22d</td>
+      <td style="font-weight:700;color:#D64545">22d</td>
       <td>20.527</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2554,7 +2559,7 @@
       <td style="color:var(--muted)">75</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ROBERTO MINORU WATANABE E OUTRO _PR">ROBERTO MINORU WATANABE E OUTRO _PR</td>
       <td>2026-05-12</td>
-      <td style="font-weight:700;color:#ef4444">22d</td>
+      <td style="font-weight:700;color:#D64545">22d</td>
       <td>2.879</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2564,7 +2569,7 @@
       <td style="color:var(--muted)">76</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CRISTINA TIEMI KODAWARA NAKAKUBO_PR">CRISTINA TIEMI KODAWARA NAKAKUBO_PR</td>
       <td>2026-05-12</td>
-      <td style="font-weight:700;color:#ef4444">22d</td>
+      <td style="font-weight:700;color:#D64545">22d</td>
       <td>7.126</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2574,7 +2579,7 @@
       <td style="color:var(--muted)">77</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="DIVANIR FRANCO DE MORAIS 111">DIVANIR FRANCO DE MORAIS 111</td>
       <td>2026-05-11</td>
-      <td style="font-weight:700;color:#ef4444">23d</td>
+      <td style="font-weight:700;color:#D64545">23d</td>
       <td>3.000</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2584,7 +2589,7 @@
       <td style="color:var(--muted)">78</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="3B &amp; DJC COMERCIO ATACADISTA DE HORTIFRUTI LTDA">3B &amp; DJC COMERCIO ATACADISTA DE HORTIFRUTI LTDA</td>
       <td>2026-05-11</td>
-      <td style="font-weight:700;color:#ef4444">23d</td>
+      <td style="font-weight:700;color:#D64545">23d</td>
       <td>22.438</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2594,7 +2599,7 @@
       <td style="color:var(--muted)">79</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="FABIO DE JESUS DOS SANTOS E OUTRA_PR">FABIO DE JESUS DOS SANTOS E OUTRA_PR</td>
       <td>2026-05-11</td>
-      <td style="font-weight:700;color:#ef4444">23d</td>
+      <td style="font-weight:700;color:#D64545">23d</td>
       <td>2</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2604,7 +2609,7 @@
       <td style="color:var(--muted)">80</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="PEDRO AUGUSTO BRISOLA E OUTRA_PR">PEDRO AUGUSTO BRISOLA E OUTRA_PR</td>
       <td>2026-05-09</td>
-      <td style="font-weight:700;color:#ef4444">25d</td>
+      <td style="font-weight:700;color:#D64545">25d</td>
       <td>686</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2614,7 +2619,7 @@
       <td style="color:var(--muted)">81</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CLAUDIO VIEIRA E/OU ANA LUCIA BRISOLA PROFETA_PR">CLAUDIO VIEIRA E/OU ANA LUCIA BRISOLA PROFETA_PR</td>
       <td>2026-05-08</td>
-      <td style="font-weight:700;color:#ef4444">26d</td>
+      <td style="font-weight:700;color:#D64545">26d</td>
       <td>2.144</td>
       <td><div class="cd-tooltip">
     <span class="multi-cd-badge" style="cursor:help">🔀 2 CDs</span>
@@ -2627,7 +2632,7 @@
       <td style="color:var(--muted)">82</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="LEANDRO APARECIDO ALVES _PR">LEANDRO APARECIDO ALVES _PR</td>
       <td>2026-05-08</td>
-      <td style="font-weight:700;color:#ef4444">26d</td>
+      <td style="font-weight:700;color:#D64545">26d</td>
       <td>4.155</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2637,7 +2642,7 @@
       <td style="color:var(--muted)">83</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JAIR CRISTOVAO BRISOLA E/OU ELAINE CRISTINA DIAS DE GOES BRISOLA_PR">JAIR CRISTOVAO BRISOLA E/OU ELAINE CRISTINA DIAS DE GOES BRISOLA_PR</td>
       <td>2026-05-07</td>
-      <td style="font-weight:700;color:#ef4444">27d</td>
+      <td style="font-weight:700;color:#D64545">27d</td>
       <td>3.942</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2647,7 +2652,7 @@
       <td style="color:var(--muted)">84</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="DOMINGOS PEDRO DE SOUSA FILHO ME">DOMINGOS PEDRO DE SOUSA FILHO ME</td>
       <td>2026-05-05</td>
-      <td style="font-weight:700;color:#ef4444">29d</td>
+      <td style="font-weight:700;color:#D64545">29d</td>
       <td>1.050</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2657,7 +2662,7 @@
       <td style="color:var(--muted)">85</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="DARCIO LEONEL BRISOLA MEDEIROS_PR">DARCIO LEONEL BRISOLA MEDEIROS_PR</td>
       <td>2026-05-05</td>
-      <td style="font-weight:700;color:#ef4444">29d</td>
+      <td style="font-weight:700;color:#D64545">29d</td>
       <td>825</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2667,7 +2672,7 @@
       <td style="color:var(--muted)">86</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ADRIAN VITOR GALDINO DA SILVA_PR">ADRIAN VITOR GALDINO DA SILVA_PR</td>
       <td>2026-05-05</td>
-      <td style="font-weight:700;color:#ef4444">29d</td>
+      <td style="font-weight:700;color:#D64545">29d</td>
       <td>1.476</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2677,7 +2682,7 @@
       <td style="color:var(--muted)">87</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="TAKOISH COM VERDURAS E LEGUMES LTDA EPP">TAKOISH COM VERDURAS E LEGUMES LTDA EPP</td>
       <td>2026-05-04</td>
-      <td style="font-weight:700;color:#ef4444">30d</td>
+      <td style="font-weight:700;color:#D64545">30d</td>
       <td>604</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2687,7 +2692,7 @@
       <td style="color:var(--muted)">88</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="PEDRO VINICIUS DA SILVA CHRISTOFOLI E OUTRA_PR">PEDRO VINICIUS DA SILVA CHRISTOFOLI E OUTRA_PR</td>
       <td>2026-05-03</td>
-      <td style="font-weight:700;color:#ef4444">31d</td>
+      <td style="font-weight:700;color:#D64545">31d</td>
       <td>4.082</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2697,7 +2702,7 @@
       <td style="color:var(--muted)">89</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CATAO COMERCIO DE FRUTAS LTDA">CATAO COMERCIO DE FRUTAS LTDA</td>
       <td>2026-04-30</td>
-      <td style="font-weight:700;color:#ef4444">34d</td>
+      <td style="font-weight:700;color:#D64545">34d</td>
       <td>50</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2707,7 +2712,7 @@
       <td style="color:var(--muted)">90</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="BEIRA RIO ECOHORTAS DO BRASIL LTDA">BEIRA RIO ECOHORTAS DO BRASIL LTDA</td>
       <td>2026-04-28</td>
-      <td style="font-weight:700;color:#ef4444">36d</td>
+      <td style="font-weight:700;color:#D64545">36d</td>
       <td>2.369</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2717,7 +2722,7 @@
       <td style="color:var(--muted)">91</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="GEOVANI PUCCI PINTO_PR">GEOVANI PUCCI PINTO_PR</td>
       <td>2026-04-28</td>
-      <td style="font-weight:700;color:#ef4444">36d</td>
+      <td style="font-weight:700;color:#D64545">36d</td>
       <td>460</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2727,7 +2732,7 @@
       <td style="color:var(--muted)">92</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="SERGIO ANTONIO FERREIRA E OUTRA_PR">SERGIO ANTONIO FERREIRA E OUTRA_PR</td>
       <td>2026-04-27</td>
-      <td style="font-weight:700;color:#ef4444">37d</td>
+      <td style="font-weight:700;color:#D64545">37d</td>
       <td>1.481</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2737,7 +2742,7 @@
       <td style="color:var(--muted)">93</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="IRMAOS GARCIA HORTIFRUTIGRANJEIROS LTDA">IRMAOS GARCIA HORTIFRUTIGRANJEIROS LTDA</td>
       <td>2026-04-24</td>
-      <td style="font-weight:700;color:#ef4444">40d</td>
+      <td style="font-weight:700;color:#D64545">40d</td>
       <td>360</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2747,7 +2752,7 @@
       <td style="color:var(--muted)">94</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="WALDIR DIAS DE GOES E CLEIDE DIAS_PR">WALDIR DIAS DE GOES E CLEIDE DIAS_PR</td>
       <td>2026-04-23</td>
-      <td style="font-weight:700;color:#ef4444">41d</td>
+      <td style="font-weight:700;color:#D64545">41d</td>
       <td>1.286</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2757,7 +2762,7 @@
       <td style="color:var(--muted)">95</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="GUILHERME EDUARDO RIBEIRO_PR">GUILHERME EDUARDO RIBEIRO_PR</td>
       <td>2026-04-22</td>
-      <td style="font-weight:700;color:#ef4444">42d</td>
+      <td style="font-weight:700;color:#D64545">42d</td>
       <td>621</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2767,7 +2772,7 @@
       <td style="color:var(--muted)">96</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="RODRIGO LELES DO NASCIMENTO_PR">RODRIGO LELES DO NASCIMENTO_PR</td>
       <td>2026-04-21</td>
-      <td style="font-weight:700;color:#ef4444">43d</td>
+      <td style="font-weight:700;color:#D64545">43d</td>
       <td>420</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2777,7 +2782,7 @@
       <td style="color:var(--muted)">97</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="UESLEI GUILHERME LEONOR_PR">UESLEI GUILHERME LEONOR_PR</td>
       <td>2026-04-21</td>
-      <td style="font-weight:700;color:#ef4444">43d</td>
+      <td style="font-weight:700;color:#D64545">43d</td>
       <td>450</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2787,7 +2792,7 @@
       <td style="color:var(--muted)">98</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JOACABA COMERCIO DE HORTIFRUTI EIRELI">JOACABA COMERCIO DE HORTIFRUTI EIRELI</td>
       <td>2026-04-21</td>
-      <td style="font-weight:700;color:#ef4444">43d</td>
+      <td style="font-weight:700;color:#D64545">43d</td>
       <td>7.245</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2797,7 +2802,7 @@
       <td style="color:var(--muted)">99</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="AGNALDO MARTINS MARTINS_PR">AGNALDO MARTINS MARTINS_PR</td>
       <td>2026-04-21</td>
-      <td style="font-weight:700;color:#ef4444">43d</td>
+      <td style="font-weight:700;color:#D64545">43d</td>
       <td>1.626</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2807,7 +2812,7 @@
       <td style="color:var(--muted)">100</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="GEOVANA PEREIRA VIEIRA_PR">GEOVANA PEREIRA VIEIRA_PR</td>
       <td>2026-04-21</td>
-      <td style="font-weight:700;color:#ef4444">43d</td>
+      <td style="font-weight:700;color:#D64545">43d</td>
       <td>22.431</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2817,7 +2822,7 @@
       <td style="color:var(--muted)">101</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="RAFAEL LOLO BRIGIDA_PR">RAFAEL LOLO BRIGIDA_PR</td>
       <td>2026-04-16</td>
-      <td style="font-weight:700;color:#ef4444">48d</td>
+      <td style="font-weight:700;color:#D64545">48d</td>
       <td>407</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2827,7 +2832,7 @@
       <td style="color:var(--muted)">102</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="EDSON ANTONIO TREBESCHI_PR">EDSON ANTONIO TREBESCHI_PR</td>
       <td>2026-04-14</td>
-      <td style="font-weight:700;color:#ef4444">50d</td>
+      <td style="font-weight:700;color:#D64545">50d</td>
       <td>155</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2837,7 +2842,7 @@
       <td style="color:var(--muted)">103</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="DJACI NUNES DE AZEVEDO 76034801400">DJACI NUNES DE AZEVEDO 76034801400</td>
       <td>2026-04-14</td>
-      <td style="font-weight:700;color:#ef4444">50d</td>
+      <td style="font-weight:700;color:#D64545">50d</td>
       <td>334</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2847,7 +2852,7 @@
       <td style="color:var(--muted)">104</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="N. AMADEO FERRARA PRODUTORA E COMERCIAL AGRICOLA EIRELI">N. AMADEO FERRARA PRODUTORA E COMERCIAL AGRICOLA EIRELI</td>
       <td>2026-04-13</td>
-      <td style="font-weight:700;color:#ef4444">51d</td>
+      <td style="font-weight:700;color:#D64545">51d</td>
       <td>750</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2857,7 +2862,7 @@
       <td style="color:var(--muted)">105</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="TIAGO JOSE DA SILVA">TIAGO JOSE DA SILVA</td>
       <td>2026-04-11</td>
-      <td style="font-weight:700;color:#ef4444">53d</td>
+      <td style="font-weight:700;color:#D64545">53d</td>
       <td>30</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2867,7 +2872,7 @@
       <td style="color:var(--muted)">106</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="VOLNEY ANTONIO DE CAMPOS E OU JOAO ANTONIO DE CAMPOS">VOLNEY ANTONIO DE CAMPOS E OU JOAO ANTONIO DE CAMPOS</td>
       <td>2026-04-09</td>
-      <td style="font-weight:700;color:#ef4444">55d</td>
+      <td style="font-weight:700;color:#D64545">55d</td>
       <td>200</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2877,7 +2882,7 @@
       <td style="color:var(--muted)">107</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="SAO MIGUEL COMERCIAL DE FRUTAS E VERDURAS LTDA">SAO MIGUEL COMERCIAL DE FRUTAS E VERDURAS LTDA</td>
       <td>2026-04-09</td>
-      <td style="font-weight:700;color:#ef4444">55d</td>
+      <td style="font-weight:700;color:#D64545">55d</td>
       <td>152</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2887,7 +2892,7 @@
       <td style="color:var(--muted)">108</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="EDERALDO ADAO DE ANDRADE E OUTRA_PR">EDERALDO ADAO DE ANDRADE E OUTRA_PR</td>
       <td>2026-04-09</td>
-      <td style="font-weight:700;color:#ef4444">55d</td>
+      <td style="font-weight:700;color:#D64545">55d</td>
       <td>1.797</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2897,7 +2902,7 @@
       <td style="color:var(--muted)">109</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="GILBERTO KODAWARA E OUTRO_PR">GILBERTO KODAWARA E OUTRO_PR</td>
       <td>2026-04-09</td>
-      <td style="font-weight:700;color:#ef4444">55d</td>
+      <td style="font-weight:700;color:#D64545">55d</td>
       <td>2.035</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2907,7 +2912,7 @@
       <td style="color:var(--muted)">110</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="VALDEREIS SEBAST FERNANDES DOS SANTOS_PR">VALDEREIS SEBAST FERNANDES DOS SANTOS_PR</td>
       <td>2026-04-05</td>
-      <td style="font-weight:700;color:#ef4444">59d</td>
+      <td style="font-weight:700;color:#D64545">59d</td>
       <td>500</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2917,7 +2922,7 @@
       <td style="color:var(--muted)">111</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="PAULO RENATO LOPES DE OLIVEIRA_PR">PAULO RENATO LOPES DE OLIVEIRA_PR</td>
       <td>2026-03-27</td>
-      <td style="font-weight:700;color:#ef4444">68d</td>
+      <td style="font-weight:700;color:#D64545">68d</td>
       <td>1.205</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2927,7 +2932,7 @@
       <td style="color:var(--muted)">112</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CARLOS BATISTA DE OLIVEIRA ME">CARLOS BATISTA DE OLIVEIRA ME</td>
       <td>2026-03-26</td>
-      <td style="font-weight:700;color:#ef4444">69d</td>
+      <td style="font-weight:700;color:#D64545">69d</td>
       <td>60</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2937,7 +2942,7 @@
       <td style="color:var(--muted)">113</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JOSE FABIO ANDRADE DO NASCIMENTO_PR">JOSE FABIO ANDRADE DO NASCIMENTO_PR</td>
       <td>2026-03-25</td>
-      <td style="font-weight:700;color:#ef4444">70d</td>
+      <td style="font-weight:700;color:#D64545">70d</td>
       <td>100</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2947,7 +2952,7 @@
       <td style="color:var(--muted)">114</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="ANA MARIA DE ALBUQUERQUE DOMINGUES E OUTROS_PR">ANA MARIA DE ALBUQUERQUE DOMINGUES E OUTROS_PR</td>
       <td>2026-03-24</td>
-      <td style="font-weight:700;color:#ef4444">71d</td>
+      <td style="font-weight:700;color:#D64545">71d</td>
       <td>400</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2957,7 +2962,7 @@
       <td style="color:var(--muted)">115</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="VALDIR APARECIDO MONTICO E OUTRA _PR">VALDIR APARECIDO MONTICO E OUTRA _PR</td>
       <td>2026-03-23</td>
-      <td style="font-weight:700;color:#ef4444">72d</td>
+      <td style="font-weight:700;color:#D64545">72d</td>
       <td>4.025</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2967,7 +2972,7 @@
       <td style="color:var(--muted)">116</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="DIJALMA PEDRO DA SILVA _PR">DIJALMA PEDRO DA SILVA _PR</td>
       <td>2026-03-20</td>
-      <td style="font-weight:700;color:#ef4444">75d</td>
+      <td style="font-weight:700;color:#D64545">75d</td>
       <td>546</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2977,7 +2982,7 @@
       <td style="color:var(--muted)">117</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="RUBENS NAKAGAVA_PR">RUBENS NAKAGAVA_PR</td>
       <td>2026-03-19</td>
-      <td style="font-weight:700;color:#ef4444">76d</td>
+      <td style="font-weight:700;color:#D64545">76d</td>
       <td>10</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2987,7 +2992,7 @@
       <td style="color:var(--muted)">118</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="SANDRO NASCIMENTO DA SILVA CARVALHO_PR">SANDRO NASCIMENTO DA SILVA CARVALHO_PR</td>
       <td>2026-03-19</td>
-      <td style="font-weight:700;color:#ef4444">76d</td>
+      <td style="font-weight:700;color:#D64545">76d</td>
       <td>72</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -2997,7 +3002,7 @@
       <td style="color:var(--muted)">119</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="MURILO BRISOLA MARTINS_PR">MURILO BRISOLA MARTINS_PR</td>
       <td>2026-03-19</td>
-      <td style="font-weight:700;color:#ef4444">76d</td>
+      <td style="font-weight:700;color:#D64545">76d</td>
       <td>166</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">0</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -3007,7 +3012,7 @@
       <td style="color:var(--muted)">120</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="VALDEMIR LUIZ PAVAN E OUTRA_PR">VALDEMIR LUIZ PAVAN E OUTRA_PR</td>
       <td>2026-03-17</td>
-      <td style="font-weight:700;color:#ef4444">78d</td>
+      <td style="font-weight:700;color:#D64545">78d</td>
       <td>1.605</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -3017,7 +3022,7 @@
       <td style="color:var(--muted)">121</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="COMERCIAL DE ALIMENTOS TRES R LTDA">COMERCIAL DE ALIMENTOS TRES R LTDA</td>
       <td>2026-03-17</td>
-      <td style="font-weight:700;color:#ef4444">78d</td>
+      <td style="font-weight:700;color:#D64545">78d</td>
       <td>65</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -3027,7 +3032,7 @@
       <td style="color:var(--muted)">122</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="JOSE LUPERCIO MARCO LONA_PR">JOSE LUPERCIO MARCO LONA_PR</td>
       <td>2026-03-16</td>
-      <td style="font-weight:700;color:#ef4444">79d</td>
+      <td style="font-weight:700;color:#D64545">79d</td>
       <td>1.847</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -3037,7 +3042,7 @@
       <td style="color:var(--muted)">123</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="CLAUDINEI ROSA OLIVEIRA E OUTRA_PR">CLAUDINEI ROSA OLIVEIRA E OUTRA_PR</td>
       <td>2026-03-12</td>
-      <td style="font-weight:700;color:#ef4444">83d</td>
+      <td style="font-weight:700;color:#D64545">83d</td>
       <td>41</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -3047,7 +3052,7 @@
       <td style="color:var(--muted)">124</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="VALDECI CAMILO DOMBROSKI E OUTRA_PR">VALDECI CAMILO DOMBROSKI E OUTRA_PR</td>
       <td>2026-03-11</td>
-      <td style="font-weight:700;color:#ef4444">84d</td>
+      <td style="font-weight:700;color:#D64545">84d</td>
       <td>10</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -3057,7 +3062,7 @@
       <td style="color:var(--muted)">125</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="FRUTAS &amp; VERDURAS AP EIRELI">FRUTAS &amp; VERDURAS AP EIRELI</td>
       <td>2026-03-10</td>
-      <td style="font-weight:700;color:#ef4444">85d</td>
+      <td style="font-weight:700;color:#D64545">85d</td>
       <td>19</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -3067,7 +3072,7 @@
       <td style="color:var(--muted)">126</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="COAC COOPERATIVA AGROIND DE CARLOPOLIS">COAC COOPERATIVA AGROIND DE CARLOPOLIS</td>
       <td>2026-03-06</td>
-      <td style="font-weight:700;color:#ef4444">89d</td>
+      <td style="font-weight:700;color:#D64545">89d</td>
       <td>102</td>
       <td><span style="color:var(--muted);font-family:&#39;DM Mono&#39;,monospace;font-size:11px">1</span></td>
       <td><span class="badge crit">CRÍTICO</span></td>
@@ -3159,9 +3164,9 @@ function badgeClass(s) {
 }
 
 function getColor(tipo) {
-  if (tipo === 'CD') return 'rgba(139,92,246,0.7)';
-  if (tipo === 'Fornecedor') return 'rgba(6,182,212,0.7)';
-  return 'rgba(245,158,11,0.7)';
+  if (tipo === 'CD') return 'rgba(123,94,167,0.7)';
+  if (tipo === 'Fornecedor') return 'rgba(42,157,143,0.7)';
+  return 'rgba(247,127,0,0.7)';
 }
 
 // ======================================================
@@ -3179,7 +3184,7 @@ function filtrarEntidades() {
   const busca = (document.getElementById('search-entidade').value || '').toLowerCase().trim();
   const todas = getEntidadesVisiveis();
   const filtradas = busca ? todas.filter(e => e.nome.toLowerCase().includes(busca)) : todas;
-  const cores = {CD:'#8b5cf6', Fornecedor:'#06b6d4', Loja:'#f59e0b'};
+  const cores = {CD:'#7B5EA7', Fornecedor:'#2A9D8F', Loja:'#C05621'};
 
   const dropdown = document.getElementById('dropdown-entidade');
   if (!filtradas.length) { dropdown.style.display = 'none'; return; }
@@ -3216,7 +3221,7 @@ function selecionarEntidade(nome, tipo) {
 }
 
 function renderTagsEntidade() {
-  const cores = {CD:'#8b5cf6', Fornecedor:'#06b6d4', Loja:'#f59e0b'};
+  const cores = {CD:'#7B5EA7', Fornecedor:'#2A9D8F', Loja:'#C05621'};
   const container = document.getElementById('tags-entidade');
   if (!filtroEntidades.size) { container.innerHTML = ''; return; }
 
@@ -3250,7 +3255,7 @@ document.addEventListener('click', e => {
 
 function renderPillsTipo() {
   const tipos = ['CD','Fornecedor','Loja'];
-  const cores = {CD:'#8b5cf6', Fornecedor:'#06b6d4', Loja:'#f59e0b'};
+  const cores = {CD:'#7B5EA7', Fornecedor:'#2A9D8F', Loja:'#C05621'};
   document.getElementById('pills-tipo').innerHTML = tipos.map(t => {
     const ativo = filtroTipo[t];
     return `<span onclick="toggleTipo('${t}')" style="
@@ -3258,10 +3263,10 @@ function renderPillsTipo() {
       font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;
       border:1.5px solid ${cores[t]};
       background:${ativo ? cores[t]+'26' : 'transparent'};
-      color:${ativo ? cores[t] : '#475569'};
+      color:${ativo ? cores[t] : '#4A5940'};
       transition:all .15s;
     ">
-      <span style="width:7px;height:7px;border-radius:50%;background:${ativo ? cores[t] : '#475569'}"></span>
+      <span style="width:7px;height:7px;border-radius:50%;background:${ativo ? cores[t] : '#4A5940'}"></span>
       ${t}
     </span>`;
   }).join('');
@@ -3364,9 +3369,9 @@ function renderMovimentacao() {
   const lojaData  = labels.map(d => filtroTipo.Loja       ? (tipoMap[d]?.Loja       || 0) : null);
 
   const tiposAtivos = [
-    filtroTipo.CD         && { label:'CD',         data:cdData,   backgroundColor:'rgba(139,92,246,0.8)',  borderRadius:3, borderSkipped:false },
-    filtroTipo.Fornecedor && { label:'Fornecedor',  data:fornData,  backgroundColor:'rgba(6,182,212,0.8)',   borderRadius:3, borderSkipped:false },
-    filtroTipo.Loja       && { label:'Loja',        data:lojaData,  backgroundColor:'rgba(245,158,11,0.8)',  borderRadius:3, borderSkipped:false },
+    filtroTipo.CD         && { label:'CD',         data:cdData,   backgroundColor:'rgba(123,94,167,0.8)',  borderRadius:3, borderSkipped:false },
+    filtroTipo.Fornecedor && { label:'Fornecedor',  data:fornData,  backgroundColor:'rgba(42,157,143,0.8)',   borderRadius:3, borderSkipped:false },
+    filtroTipo.Loja       && { label:'Loja',        data:lojaData,  backgroundColor:'rgba(247,127,0,0.8)',  borderRadius:3, borderSkipped:false },
   ].filter(Boolean);
 
   const soUmTipo = tiposAtivos.length === 1;
@@ -3397,28 +3402,28 @@ function renderMovimentacao() {
           anchor: 'end',
           align: 'end',
           offset: 2,
-          color: '#94a3b8',
+          color: '#6E7A5E',
           font: { family: "'DM Mono', monospace", size: 9, weight: '500' },
           formatter: (val) => val ? fmtFull(val) : ''
         }
       },
       scales: {
-        x: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#64748b',font:{size:9}, maxRotation:45, maxTicksLimit:22} },
-        y: { grid:{color:'rgba(255,255,255,0.06)'}, ticks:{color:'#64748b',font:{size:10}, callback: v => fmtFull(v)} }
+        x: { grid:{color:'rgba(31,58,16,0.07)'}, ticks:{color:'#8A9179',font:{size:9}, maxRotation:45, maxTicksLimit:22} },
+        y: { grid:{color:'rgba(31,58,16,0.09)'}, ticks:{color:'#8A9179',font:{size:10}, callback: v => fmtFull(v)} }
       }
     }
   });
 
   // BARRAS HORIZONTAIS POR MODELO
   const totalProd = DADOS.por_produto.reduce((s,p) => s + p.qtd, 0);
-  const coresProd = ['#8b5cf6','#06b6d4','#f59e0b','#3b82f6','#10b981'];
+  const coresProd = ['#7B5EA7','#2A9D8F','#C05621','#2F6F8F','#2D5016'];
   const prodSorted = [...DADOS.por_produto].sort((a,b) => b.qtd - a.qtd);
   document.getElementById('barras-produto').innerHTML = prodSorted.map((p,i) => {
     const pct = Math.round(p.qtd / totalProd * 100);
     const nome = p.produto.replace('CAIXA PLASTICA MODELO ','MOD. ').replace('CAIXA PLASTICA ','');
     return `
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <div style="flex:0 0 130px;font-size:11px;font-family:'DM Mono',monospace;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${p.produto}">${nome}</div>
+        <div style="flex:0 0 130px;font-size:11px;font-family:'DM Mono',monospace;color:#6E7A5E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${p.produto}">${nome}</div>
         <div style="flex:1;background:var(--surface2);border-radius:4px;height:20px;overflow:hidden;position:relative">
           <div style="width:${pct}%;height:100%;background:${coresProd[i]};border-radius:4px;transition:width .5s ease"></div>
         </div>
@@ -3450,10 +3455,10 @@ function renderDetalheTable(data) {
   tbody.innerHTML = data.map(r => `
     <tr>
       <td>${r.data}</td>
-      <td style="color:#a78bfa">${fmtFull(r.cd)}</td>
-      <td style="color:#22d3ee">${fmtFull(r.forn)}</td>
-      <td style="color:#fbbf24">${fmtFull(r.loja)}</td>
-      <td style="font-weight:700;color:${r.total > avg ? '#10b981' : '#e2e8f0'}">${fmtFull(r.total)}</td>
+      <td style="color:#6B4E96">${fmtFull(r.cd)}</td>
+      <td style="color:#1F7A6E">${fmtFull(r.forn)}</td>
+      <td style="color:#C05621">${fmtFull(r.loja)}</td>
+      <td style="font-weight:700;color:${r.total > avg ? '#2D5016' : '#1F3A10'}">${fmtFull(r.total)}</td>
     </tr>
   `).join('');
 }
@@ -3555,7 +3560,7 @@ function renderTagsFornSel() {
   c.innerHTML = [...fornSelecionados].map(n => `
     <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px 3px 8px;
       border-radius:20px;font-size:10px;font-family:'DM Mono',monospace;font-weight:700;
-      background:var(--accent-dim);color:#60a5fa;border:1px solid #3b82f655;">
+      background:var(--accent-dim);color:#2F6F8F;border:1px solid #2F6F8F55;">
       ${n.length > 28 ? n.slice(0,28)+'…' : n}
     </span>`).join('');
 }
@@ -3612,9 +3617,9 @@ function renderFornecedores() {
       labels: ['CRÍTICO','ATENÇÃO','OK'],
       datasets: [{
         data: [K.criticos, K.atencao, K.ok],
-        backgroundColor: ['#ef4444','#f59e0b','#10b981'],
+        backgroundColor: ['#D64545','#C05621','#2D5016'],
         borderWidth: 2,
-        borderColor: '#111620',
+        borderColor: '#FFFFFF',
         datalabels: {
           display: true,
           color: '#fff',
@@ -3632,7 +3637,7 @@ function renderFornecedores() {
     options: {
       responsive: true, maintainAspectRatio: false, cutout: '52%',
       plugins: {
-        legend: { position:'bottom', labels:{ color:'#94a3b8', font:{size:11}, padding:14 } },
+        legend: { position:'bottom', labels:{ color:'#6E7A5E', font:{size:11}, padding:14 } },
         datalabels: { display: false }, // desativa o global; cada dataset controla o próprio
         tooltip: { callbacks:{ label: i => `${i.label}: ${i.raw} fornecedores` } }
       }
@@ -3646,7 +3651,7 @@ function renderFornecedores() {
     <div class="rank-row">
       <div class="rank-name" title="${f.fornecedor}">${i+1}. ${f.fornecedor}</div>
       <div class="rank-bar-wrap">
-        <div class="rank-bar" style="width:${Math.round(f.dias_sem_mov/maxDias*100)}%;background:${f.dias_sem_mov >= 90 ? '#ef4444' : f.dias_sem_mov >= 50 ? '#f97316' : '#fbbf24'}"></div>
+        <div class="rank-bar" style="width:${Math.round(f.dias_sem_mov/maxDias*100)}%;background:${f.dias_sem_mov >= 90 ? '#D64545' : f.dias_sem_mov >= 50 ? '#FF6B35' : '#C05621'}"></div>
       </div>
       <div class="rank-val">${f.dias_sem_mov}d</div>
     </div>
@@ -3659,7 +3664,7 @@ function renderFornecedores() {
       <td title="${f.fornecedor}" style="max-width:260px;overflow:hidden;text-overflow:ellipsis">${f.fornecedor}</td>
       <td>${cdBadge(f.fornecedor)}</td>
       <td>${f.ultima_data}</td>
-      <td style="color:${f.dias_sem_mov >= 21 ? '#ef4444' : f.dias_sem_mov >= 8 ? '#f59e0b' : '#10b981'};font-weight:700">${f.dias_sem_mov}d</td>
+      <td style="color:${f.dias_sem_mov >= 21 ? '#D64545' : f.dias_sem_mov >= 8 ? '#C05621' : '#2D5016'};font-weight:700">${f.dias_sem_mov}d</td>
       <td>${fmtFull(f.volume_90d)}</td>
       <td><span class="badge ${badgeClass(f.status)}">${f.status}</span></td>
     </tr>
@@ -3722,7 +3727,7 @@ function renderFornTable() {
       <td style="color:var(--muted)">${i+1}</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis" title="${f.fornecedor}">${f.fornecedor}</td>
       <td>${f.ultima_data}</td>
-      <td style="font-weight:700;color:${f.dias_sem_mov >= 21 ? '#ef4444' : f.dias_sem_mov >= 8 ? '#f59e0b' : '#10b981'}">${f.dias_sem_mov}d</td>
+      <td style="font-weight:700;color:${f.dias_sem_mov >= 21 ? '#D64545' : f.dias_sem_mov >= 8 ? '#C05621' : '#2D5016'}">${f.dias_sem_mov}d</td>
       <td>${fmtFull(f.volume_90d)}</td>
       <td>${cdBadge(f.fornecedor)}</td>
       <td><span class="badge ${badgeClass(f.status)}">${f.status}</span></td>
@@ -3734,50 +3739,50 @@ function renderFornTable() {
 
 
 <!-- ═══ TELA DE UPLOAD ═══ -->
-<div id="upload-screen" style="display:flex;position:fixed;inset:0;background:#0a0c10;z-index:9999;
+<div id="upload-screen" style="display:flex;position:fixed;inset:0;background:#F6F4EF;z-index:9999;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;font-family:'Exo 2',sans-serif;">
-  <div style="font-size:28px;font-weight:900;color:#3b82f6;letter-spacing:1px;">CAIXAS PLÁSTICAS · OBA</div>
-  <div style="font-size:13px;color:#5a6070;letter-spacing:.5px;">Movimentação Diária · CD Sumaré/SP</div>
-  <div id="upload-card" style="background:#13161d;border:2px dashed #1e222e;border-radius:12px;
+  <div style="font-size:28px;font-weight:900;color:#2F6F8F;letter-spacing:1px;">CAIXAS PLÁSTICAS · OBA</div>
+  <div style="font-size:13px;color:#8A9179;letter-spacing:.5px;">Movimentação Diária · CD Sumaré/SP</div>
+  <div id="upload-card" style="background:#FFFFFF;border:2px dashed #E3DED3;border-radius:12px;
     padding:36px 48px;text-align:center;cursor:pointer;transition:all .2s;position:relative;width:440px;">
     <input type="file" id="file-main" accept=".xlsx,.xls"
       style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
     <div style="font-size:36px;margin-bottom:12px;">📊</div>
-    <div style="font-size:15px;font-weight:700;color:#e8eaf0;margin-bottom:6px;">Relatório de Movimentação</div>
-    <div style="font-size:11px;color:#5a6070;line-height:1.6;">Relatório_movimentação_caixas_plasticas.xlsx<br>Aba: Base_Saldo</div>
+    <div style="font-size:15px;font-weight:700;color:#1F3A10;margin-bottom:6px;">Relatório de Movimentação</div>
+    <div style="font-size:11px;color:#8A9179;line-height:1.6;">Relatório_movimentação_caixas_plasticas.xlsx<br>Aba: Base_Saldo</div>
     <div id="up-status" style="font-size:11px;margin-top:10px;min-height:16px;"></div>
   </div>
   <button id="btn-gerar" onclick="entrarComUpload()"
     style="font-size:13px;font-weight:700;letter-spacing:1px;padding:12px 36px;border-radius:8px;
-    border:none;cursor:pointer;background:#3b82f6;color:#fff;opacity:.4;pointer-events:none;transition:.2s;">
+    border:none;cursor:pointer;background:#2F6F8F;color:#fff;opacity:.4;pointer-events:none;transition:.2s;">
     GERAR DASHBOARD
   </button>
   <button onclick="entrarVisualizador()"
     style="font-size:12px;font-weight:600;padding:8px 20px;border-radius:6px;
-    border:1px solid #1e222e;cursor:pointer;background:transparent;color:#5a6070;transition:.2s;">
+    border:1px solid #E3DED3;cursor:pointer;background:transparent;color:#8A9179;transition:.2s;">
     Só visualizar (dados do servidor)
   </button>
 </div>
 
 
 <!-- ═══ MODAL ATUALIZAR ═══ -->
-<div id="modal-upload" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);
+<div id="modal-upload" style="display:none;position:fixed;inset:0;background:rgba(31,58,16,.45);
   z-index:1000;align-items:center;justify-content:center;">
-  <div style="background:#13161d;border:1px solid #1e222e;border-radius:14px;padding:28px 32px;width:440px;max-width:95vw;">
-    <div style="font-size:18px;font-weight:900;color:#3b82f6;margin-bottom:6px;">Atualizar Dados</div>
-    <div style="font-size:12px;color:#5a6070;margin-bottom:20px;">Faça upload da planilha atualizada. Os dados substituem o servidor.</div>
-    <div id="modal-card" style="background:#0a0c10;border:1px dashed #1e222e;border-radius:8px;
+  <div style="background:#FFFFFF;border:1px solid #E3DED3;border-radius:14px;padding:28px 32px;width:440px;max-width:95vw;">
+    <div style="font-size:18px;font-weight:900;color:#2F6F8F;margin-bottom:6px;">Atualizar Dados</div>
+    <div style="font-size:12px;color:#8A9179;margin-bottom:20px;">Faça upload da planilha atualizada. Os dados substituem o servidor.</div>
+    <div id="modal-card" style="background:#F6F4EF;border:1px dashed #E3DED3;border-radius:8px;
       padding:20px;text-align:center;cursor:pointer;position:relative;margin-bottom:16px;">
       <input type="file" id="mfile-main" accept=".xlsx,.xls"
         style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
       <div style="font-size:22px;margin-bottom:6px;">📊</div>
-      <div style="font-size:13px;font-weight:700;color:#e8eaf0;margin-bottom:3px;">Relatório de Movimentação</div>
-      <div id="mstatus" style="font-size:10px;margin-top:6px;min-height:14px;color:#5a6070;"></div>
+      <div style="font-size:13px;font-weight:700;color:#1F3A10;margin-bottom:3px;">Relatório de Movimentação</div>
+      <div id="mstatus" style="font-size:10px;margin-top:6px;min-height:14px;color:#8A9179;"></div>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end;">
-      <button onclick="fecharModal()" style="background:transparent;border:1px solid #1e222e;color:#5a6070;
+      <button onclick="fecharModal()" style="background:transparent;border:1px solid #E3DED3;color:#8A9179;
         font-size:12px;padding:8px 18px;border-radius:6px;cursor:pointer;">Cancelar</button>
-      <button id="btn-modal-save" onclick="salvarModal()" disabled style="background:#3b82f6;border:none;color:#fff;
+      <button id="btn-modal-save" onclick="salvarModal()" disabled style="background:#2F6F8F;border:none;color:#fff;
         font-size:12px;font-weight:700;padding:8px 22px;border-radius:6px;cursor:pointer;opacity:.4;transition:.2s;">
         Salvar no Servidor
       </button>
@@ -3984,14 +3989,14 @@ function injetarDados(dados) {
   // Atualizar a variável global DADOS do script principal
   DADOS = dados;
   var el = document.getElementById('dados-status');
-  if (el) { el.textContent = '● DADOS: ' + dados.data_ref; el.style.color='#2ecc71'; }
+  if (el) { el.textContent = '● DADOS: ' + dados.data_ref; el.style.color='#52B788'; }
   if (typeof initDashboard === 'function') initDashboard();
 }
 
 // ═══════════ HELPERS ═══════════
 function setSyncStatus(state, msg) {
   var dot = document.getElementById('sync-dot');
-  if (dot) dot.style.background = state==='online'?'#2ecc71':'#5a6070';
+  if (dot) dot.style.background = state==='online'?'#52B788':'#8A9179';
   var txt = document.getElementById('sync-txt');
   if (txt) txt.textContent = msg;
 }
@@ -4012,14 +4017,14 @@ document.getElementById('file-main').addEventListener('change', function(e) {
       pendData = rows;
       var el = document.getElementById('up-status');
       el.textContent = '✓ ' + rows.mov_diaria.length + ' dias · ' + rows.kpis.total_fornecedores + ' fornecedores · ref: ' + rows.data_ref;
-      el.style.color = '#2ecc71';
-      document.getElementById('upload-card').style.borderColor = '#2ecc71';
+      el.style.color = '#52B788';
+      document.getElementById('upload-card').style.borderColor = '#52B788';
       var btn = document.getElementById('btn-gerar');
       btn.style.opacity='1'; btn.style.pointerEvents='all';
     },
     function(msg) {
       var el = document.getElementById('up-status');
-      el.textContent = '✗ ' + msg; el.style.color = '#e74c3c';
+      el.textContent = '✗ ' + msg; el.style.color = '#D64545';
     }
   );
 });
@@ -4082,7 +4087,7 @@ function salvarFirebase() {
 function abrirUploadModal() {
   document.getElementById('mfile-main').value = '';
   document.getElementById('mstatus').textContent = '';
-  document.getElementById('modal-card').style.borderColor = '#1e222e';
+  document.getElementById('modal-card').style.borderColor = '#E3DED3';
   var btn = document.getElementById('btn-modal-save'); btn.disabled=true; btn.style.opacity='.4';
   document.getElementById('modal-upload').style.display = 'flex';
 }
@@ -4094,12 +4099,12 @@ document.getElementById('mfile-main').addEventListener('change', function(e) {
       pendData = rows;
       var el = document.getElementById('mstatus');
       el.textContent = '✓ ' + rows.mov_diaria.length + ' dias · ref: ' + rows.data_ref;
-      el.style.color = '#2ecc71';
-      document.getElementById('modal-card').style.borderColor = '#2ecc71';
+      el.style.color = '#52B788';
+      document.getElementById('modal-card').style.borderColor = '#52B788';
       var btn = document.getElementById('btn-modal-save'); btn.disabled=false; btn.style.opacity='1';
     },
     function(msg) {
-      var el = document.getElementById('mstatus'); el.textContent='✗ '+msg; el.style.color='#e74c3c';
+      var el = document.getElementById('mstatus'); el.textContent='✗ '+msg; el.style.color='#D64545';
     }
   );
 });
